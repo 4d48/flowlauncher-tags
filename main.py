@@ -42,7 +42,10 @@ PLUGIN_DATADIR = (
     else Path(".")
 )
 
-# PLUGIN_DATADIR.mkdir(parents=True, exist_ok=True)
+PLUGIN_DATADIR.mkdir(parents=True, exist_ok=True)
+
+TAGS_FILE_PATH = PLUGIN_DATADIR / "tags.json"
+PROGRAMS_FILE_PATH = PLUGIN_DATADIR / "programs.json"
 
 logging.basicConfig(
     filename=PLUGIN_DATADIR / "plugin.log",
@@ -96,16 +99,21 @@ class AddTagToProgramResult(Result):
         self,
         tag: str,
         program: Program,
+        tag_manager: TagManager,
         api: FlowLauncherAPI,
         **kwargs: Unpack[ResultConstructorKwargs],
     ):
         super().__init__(**kwargs)
         self.tag: str = tag
         self.program: Program = program
+        self.tag_manager: TagManager = tag_manager
         self.api: FlowLauncherAPI = api
 
     @override
     async def callback(self):
+        self.tag_manager.add(self.program, self.tag)
+        self.tag_manager.to_file(TAGS_FILE_PATH)
+
         await self.api.show_notification(
             "Success!", f"Added tag '{self.tag}' to program '{self.program.name}'"
         )
@@ -117,16 +125,21 @@ class RemoveTagFromProgramResult(Result):
         self,
         tag: str,
         program: Program,
+        tag_manager: TagManager,
         api: FlowLauncherAPI,
         **kwargs: Unpack[ResultConstructorKwargs],
     ):
         super().__init__(**kwargs)
         self.tag: str = tag
         self.program: Program = program
+        self.tag_manager: TagManager = tag_manager
         self.api: FlowLauncherAPI = api
 
     @override
     async def callback(self):
+        self.tag_manager.remove(self.program, self.tag)
+        self.tag_manager.to_file(TAGS_FILE_PATH)
+
         await self.api.show_notification(
             "Success!", f"Removed tag '{self.tag}' from program '{self.program.name}'"
         )
@@ -146,19 +159,17 @@ class TagsPlugin(Plugin):
     @Plugin.event
     async def on_initialization(self):
         try:
-            self.program_manager = ProgramManager.from_file(
-                PLUGIN_DATADIR / "programs.json"
-            )
+            self.program_manager = ProgramManager.from_file(PROGRAMS_FILE_PATH)
             logger.info("Loaded programs from file")
         except (
             Exception
         ) as e:  # todo: should differentiate access problems from file unexistence
             logger.exception("Failed to load programs from file: %s", e)
             self.program_manager = ProgramManager.from_os()
-            self.program_manager.to_file(PLUGIN_DATADIR / "programs.json")
+            self.program_manager.to_file(PROGRAMS_FILE_PATH)
 
         try:
-            self.tag_manager = TagManager.from_file(PLUGIN_DATADIR / "tags.json")
+            self.tag_manager = TagManager.from_file(TAGS_FILE_PATH)
             logger.info("Loaded tags from file")
         except Exception as e:
             logger.exception("Failed to load tags from file: %s", e)
@@ -237,6 +248,7 @@ class TagsPlugin(Plugin):
                     icon=program.icon_to_data_uri("Images/transparent.png"),
                     tag=tag,
                     program=program,
+                    tag_manager=self.tag_manager,
                     api=self.api,
                 )
             )
@@ -258,6 +270,7 @@ class TagsPlugin(Plugin):
                     query_suggestion_text=f"{program.name}",
                     icon=program.icon_to_data_uri("Images/transparent.png"),
                     tag=tag,
+                    tag_manager=self.tag_manager,
                     program=program,
                     api=self.api,
                 )

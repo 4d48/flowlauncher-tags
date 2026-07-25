@@ -29,6 +29,10 @@ class TagManager:
 
         # self._program_to_tags[program].append(tag)
 
+    def remove(self, program: Program, tag: str):
+        if tag in self._tag_to_programs and program in self._tag_to_programs[tag]:
+            self._tag_to_programs[tag].remove(program)
+
     def search_by_tag(self, tag: str) -> list[Program]:
         return self._tag_to_programs.get(tag, [])
 
