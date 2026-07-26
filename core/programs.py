@@ -1,9 +1,20 @@
+import hashlib
+import logging
+import shutil
 import subprocess
 import winreg
 from dataclasses import dataclass
-from typing import TypedDict, cast
+from pathlib import Path
+from typing import TypedDict, cast, override
 
-from core.icon_extractor import get_dll_icon_as_data_uri
+from PIL import Image
+
+from core.icon_extractor import (
+    get_dll_icon_as_data_uri,
+    save_dll_icon_to_png,
+)
+
+logger = logging.getLogger(__name__)
 
 
 class ProgramDict(TypedDict):
@@ -11,17 +22,71 @@ class ProgramDict(TypedDict):
     version: str | None
     folder: str | None
     icon: str | None
-    path: str | None
+    path: str
 
 
 @dataclass(frozen=True)
 class Program:
     name: str
+    path: str
     version: str | None
     folder: str | None
     icon: str | None
-    path: str | None
 
+    @property
+    def _normalized_path(self) -> str:
+        return str(Path(self.path).resolve()).lower()
+
+    def sha256(self) -> str:
+        return hashlib.sha256(self._normalized_path.encode()).hexdigest()
+
+    @override
+    def __hash__(self) -> int:
+        return hash(self._normalized_path)
+
+    @override
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Program):
+            return NotImplemented
+
+        return self._normalized_path == other._normalized_path
+
+    def icon_to_file(self, output_path: Path, fallback: Path):
+        """
+        Extract the program icon and save it as a PNG.
+        Uses the fallback icon if an error occurs or if no icon is found.
+        """
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if not self.icon:
+            _ = shutil.copy(fallback, output_path)
+            return output_path
+
+        try:
+            icon_path, sep, index_str = self.icon.partition(",")
+            index = int(index_str) if sep and index_str else 0
+            icon_path = icon_path.strip('"')
+
+            if not icon_path or not Path(icon_path).exists():
+                _ = shutil.copy(fallback, output_path)
+                return output_path
+
+            if icon_path.lower().endswith((".exe", ".dll")):
+                save_dll_icon_to_png(icon_path, index, str(output_path), 64)
+            else:
+                with Image.open(icon_path) as img:
+                    img.save(output_path, format="PNG")
+
+            return output_path
+
+        except Exception as e:
+            logger.warning(
+                "Failed to cache icon for %s (%s): %s", self.name, self.path, e
+            )
+            _ = shutil.copy(fallback, output_path)
+            return output_path
+
+    # dead code probably
     def icon_to_data_uri(self, fallback: str = "") -> str:
         data_uri = fallback
 
@@ -42,7 +107,7 @@ class Program:
         return data_uri
 
     def launch(self):
-        return subprocess.Popen(self.path) if self.path else None
+        return subprocess.Popen(self.path)
 
 
 @dataclass
@@ -54,7 +119,7 @@ class ProgramBuilder:
     path: str | None = None
 
     def build(self) -> Program:
-        return Program(self.name, self.version, self.folder, self.icon, self.path)
+        return Program(self.name, self.path or "", self.version, self.folder, self.icon)
 
 
 def read_registry_entry(key: winreg.HKEYType, name: str) -> str:

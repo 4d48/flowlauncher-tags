@@ -44,9 +44,15 @@ PLUGIN_DATADIR = (
 PLUGIN_DATADIR.mkdir(parents=True, exist_ok=True)
 
 TAGS_FILE_PATH = PLUGIN_DATADIR / "tags.json"
-PROGRAMS_FILE_PATH = PLUGIN_DATADIR / "programs.json"
+# PROGRAMS_FILE_PATH = PLUGIN_DATADIR / "programs.json"
 
 ICON_MISSING_PATH = Path("Images") / "icon_missing.png"
+
+ICON_CACHE_DIR = PLUGIN_DATADIR / "icon_cache"
+ICON_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+# largest score value in FlowLauncher (2^31 - 1)
+MAX_SCORE: int = 2_147_483_647
 
 logging.basicConfig(
     filename=PLUGIN_DATADIR / "plugin.log",
@@ -88,10 +94,12 @@ class LaunchProgramResult(Result):
 
     @override
     async def callback(self):
-        if self.program.launch() is None:
-            await self.api.show_error_message(
-                "Couldn't launch program", "Program path is not specified"
-            )
+        # if self.program.launch() is None:
+        #     await self.api.show_error_message(
+        #         "Couldn't launch program", "Program path is not specified"
+        #     )
+
+        _ = self.program.launch()
 
         await self.api.change_query("", requery=False)
 
@@ -154,10 +162,6 @@ class RemoveTagFromProgramResult(Result):
         return ExecuteResponse(hide=True)
 
 
-# largest score value in FlowLauncher (2^31 - 1)
-MAX_SCORE: int = 2_147_483_647
-
-
 class TagsPlugin(Plugin):
     def __init__(self):
         super().__init__()
@@ -166,15 +170,15 @@ class TagsPlugin(Plugin):
 
     @Plugin.event  # pyright: ignore[reportUnknownMemberType, reportUntypedFunctionDecorator]
     async def on_initialization(self):
-        try:
-            self.program_manager = ProgramManager.from_file(PROGRAMS_FILE_PATH)
-            logger.info("Loaded programs from file")
-        except (
-            Exception
-        ) as e:  # todo: should differentiate access problems from file unexistence
-            logger.exception("Failed to load programs from file: %s", e)
-            self.program_manager = ProgramManager.from_os()
-            self.program_manager.to_file(PROGRAMS_FILE_PATH)
+        self.program_manager = ProgramManager.from_os()
+
+        for program in self.program_manager.programs:
+            cached_icon_path = ICON_CACHE_DIR / f"{(program.sha256()[:16])}.png"
+
+            if not cached_icon_path.exists():
+                _ = program.icon_to_file(
+                    cached_icon_path, Path("Images") / "icon_missing.png"
+                )
 
         try:
             self.tag_manager = TagManager.from_file(TAGS_FILE_PATH)
@@ -224,6 +228,14 @@ class TagsPlugin(Plugin):
 
         return results
 
+    def get_program_icon(self, program: Program) -> str:
+        cached_icon_path = ICON_CACHE_DIR / f"{program.sha256()[:16]}.png"
+
+        if cached_icon_path.exists():
+            return str(cached_icon_path)
+
+        return str(ICON_MISSING_PATH)
+
     def get_programs_by_tag(self, tag: str) -> list[Result]:
         result: list[Result] = []
 
@@ -232,7 +244,7 @@ class TagsPlugin(Plugin):
                 LaunchProgramResult(
                     title=f"{program.name}",
                     query_suggestion_text=f"{program.name}",
-                    icon=program.icon_to_data_uri(str(ICON_MISSING_PATH)),
+                    icon=self.get_program_icon(program),
                     program=program,
                     api=self.api,
                 )
@@ -254,7 +266,7 @@ class TagsPlugin(Plugin):
                 AddTagToProgramResult(
                     title=f"{program.name}",
                     query_suggestion_text=f"{program.name}",
-                    icon=program.icon_to_data_uri(str(ICON_MISSING_PATH)),
+                    icon=self.get_program_icon(program),
                     tag=tag,
                     program=program,
                     tag_manager=self.tag_manager,
@@ -281,7 +293,7 @@ class TagsPlugin(Plugin):
                 RemoveTagFromProgramResult(
                     title=f"{program.name}",
                     query_suggestion_text=f"{program.name}",
-                    icon=program.icon_to_data_uri(str(ICON_MISSING_PATH)),
+                    icon=self.get_program_icon(program),
                     tag=tag,
                     tag_manager=self.tag_manager,
                     program=program,
@@ -341,7 +353,7 @@ class TagsPlugin(Plugin):
                 ChangeQueryResult(
                     title=f"{program.name}",
                     query_suggestion_text=f"{program.name}",
-                    icon=program.icon_to_data_uri(str(ICON_MISSING_PATH)),
+                    icon=self.get_program_icon(program),
                     new_query=f"{base_query}{program.name} ",
                     api=self.api,
                 )
@@ -374,9 +386,8 @@ class TagsPlugin(Plugin):
                 ]
             case [AutocompleteType.TAG]:
                 result = self.autocomplete_tag(base_query, context.prefix)
-            case [AutocompleteType.PROGRAM]:
-                # result = self.autocomplete_program(base_query, context.prefix)
-                result = []
+            # case [AutocompleteType.PROGRAM]:
+            #     result = self.autocomplete_program(base_query, context.prefix)
             case [AutocompleteType.ADD_TAG_PROGRAM]:
                 tag_name = context.args["tag_name"]  # should not fail
                 result = self.get_programs_add_tag_action(tag_name, context.prefix)

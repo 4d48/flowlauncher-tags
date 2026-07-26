@@ -1,4 +1,4 @@
-# Fully AI generated
+# AI generated
 
 
 import base64
@@ -7,27 +7,25 @@ import io
 
 from PIL import Image
 
-# Завантаження системних бібліотек для роботи з Win32 API
+# Load system libraries for Win32 API operations
 user32 = ctypes.windll.user32
 gdi32 = ctypes.windll.gdi32
 
-# --- НАЛАШТУВАННЯ ТИПІВ ДЛЯ СУМІСНОСТІ З X64 ---
-# Визначення базових типів Windows
+# --- TYPE DEFINITIONS FOR X64 COMPATIBILITY ---
 HICON = ctypes.c_void_p
 HBITMAP = ctypes.c_void_p
 HDC = ctypes.c_void_p
 HANDLE = ctypes.c_void_p
 
-# Оголошення прототипів функцій user32
 user32.PrivateExtractIconsW.argtypes = [
-    ctypes.c_wchar_p,  # szFileName
-    ctypes.c_int,  # nIconIndex
-    ctypes.c_int,  # cxIcon
-    ctypes.c_int,  # cyIcon
-    ctypes.POINTER(HICON),  # phicon
-    ctypes.POINTER(ctypes.c_uint),  # piconid
-    ctypes.c_uint,  # nIcons
-    ctypes.c_uint,  # flags
+    ctypes.c_wchar_p,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.c_int,
+    ctypes.POINTER(HICON),
+    ctypes.POINTER(ctypes.c_uint),
+    ctypes.c_uint,
+    ctypes.c_uint,
 ]
 user32.PrivateExtractIconsW.restype = ctypes.c_uint
 
@@ -43,7 +41,6 @@ user32.ReleaseDC.restype = ctypes.c_int
 user32.DestroyIcon.argtypes = [HICON]
 user32.DestroyIcon.restype = ctypes.c_bool
 
-# Оголошення прототипів функцій gdi32
 gdi32.GetObjectW.argtypes = [HANDLE, ctypes.c_int, ctypes.c_void_p]
 gdi32.GetObjectW.restype = ctypes.c_int
 
@@ -63,17 +60,15 @@ gdi32.DeleteObject.restype = ctypes.c_bool
 # -----------------------------------------------
 
 
-def get_dll_icon_as_data_uri(
+def extract_dll_icon_as_image(
     dll_path: str, icon_index: int, icon_size: int = 48
-) -> str:
+) -> Image.Image:
     """
-    Витягує іконку з DLL за індексом і повертає її у форматі Data URI (Base64).
+    Extracts an icon from a DLL by index and returns it as a PIL Image object.
     """
-    # Резервуємо масив для дескриптора іконки (HICON) та її ID
     phicon = (HICON * 1)()
     piconid = (ctypes.c_uint * 1)()
 
-    # Витягуємо іконку з DLL
     result = user32.PrivateExtractIconsW(
         dll_path,
         icon_index,
@@ -87,13 +82,13 @@ def get_dll_icon_as_data_uri(
 
     if result == 0 or not phicon[0]:
         raise FileNotFoundError(
-            f"Не вдалося витягти іконку з індексом {icon_index} із {dll_path}"
+            f"Failed to extract icon at index {icon_index} from {dll_path}"
         )
 
     hicon = phicon[0]
 
     try:
-        # Отримуємо інформацію про структуру іконки (ICONINFO)
+
         class ICONINFO(ctypes.Structure):
             _fields_ = [
                 ("fIcon", ctypes.c_bool),
@@ -106,7 +101,6 @@ def get_dll_icon_as_data_uri(
         icon_info = ICONINFO()
         user32.GetIconInfo(hicon, ctypes.byref(icon_info))
 
-        # Отримуємо інформацію про BITMAP структури hbmColor
         class BITMAP(ctypes.Structure):
             _fields_ = [
                 ("bmType", ctypes.c_long),
@@ -121,7 +115,6 @@ def get_dll_icon_as_data_uri(
         bmp = BITMAP()
         gdi32.GetObjectW(icon_info.hbmColor, ctypes.sizeof(bmp), ctypes.byref(bmp))
 
-        # Визначення розміру буфера для пікселів (формат BGRA / 32-bit)
         hdc = user32.GetDC(None)
 
         class BITMAPINFOHEADER(ctypes.Structure):
@@ -142,53 +135,70 @@ def get_dll_icon_as_data_uri(
         bi = BITMAPINFOHEADER()
         bi.biSize = ctypes.sizeof(BITMAPINFOHEADER)
         bi.biWidth = bmp.bmWidth
-        bi.biHeight = (
-            -bmp.bmHeight
-        )  # Негативна висота для правильного порядку рядків (Top-Down)
+        bi.biHeight = -bmp.bmHeight  # Top-Down
         bi.biPlanes = 1
         bi.biBitCount = 32
         bi.biCompression = 0  # BI_RGB
 
-        # Виділення пам'яті під пікселі
         buffer_size = bmp.bmWidth * bmp.bmHeight * 4
         pixel_buffer = ctypes.create_string_buffer(buffer_size)
 
-        # Копіюємо байти зображення в буфер
         gdi32.GetDIBits(
             hdc, icon_info.hbmColor, 0, bmp.bmHeight, pixel_buffer, ctypes.byref(bi), 0
         )
 
-        # Звільнення контексту пристрою та дескрипторів BITMAP
         user32.ReleaseDC(None, hdc)
         gdi32.DeleteObject(icon_info.hbmColor)
         gdi32.DeleteObject(icon_info.hbmMask)
 
-        # Створення зображення за допомогою Pillow
-        img = Image.frombytes(
+        return Image.frombytes(
             "RGBA", (bmp.bmWidth, bmp.bmHeight), pixel_buffer.raw, "raw", "BGRA"
         )
 
-        # Збереження у пам'ять (BytesIO) у форматі PNG
-        output = io.BytesIO()
-        img.save(output, format="PNG")
-        png_bytes = output.getvalue()
-
-        # Кодування в Base64 для Data URI
-        base64_data = base64.b64encode(png_bytes).decode("utf-8")
-        return f"data:image/png;base64,{base64_data}"
-
     finally:
-        # Обов'язкове звільнення дескриптора іконки
         user32.DestroyIcon(hicon)
 
 
-# --- Приклад використання ---
+def save_dll_icon_to_png(
+    dll_path: str, icon_index: int, output_file_path: str, icon_size: int = 48
+) -> None:
+    """
+    Extracts an icon from a DLL and saves it directly to a PNG file.
+    """
+    img = extract_dll_icon_as_image(dll_path, icon_index, icon_size)
+    img.save(output_file_path, format="PNG")
+
+
+def get_dll_icon_as_data_uri(
+    dll_path: str, icon_index: int, icon_size: int = 48
+) -> str:
+    """
+    Extracts an icon from a DLL by index and returns it in Data URI format (Base64).
+    """
+    img = extract_dll_icon_as_image(dll_path, icon_index, icon_size)
+    output = io.BytesIO()
+    img.save(output, format="PNG")
+    png_bytes = output.getvalue()
+
+    base64_data = base64.b64encode(png_bytes).decode("utf-8")
+    return f"data:image/png;base64,{base64_data}"
+
+
+# --- Usage Example ---
 if __name__ == "__main__":
     dll = "C:\\Windows\\System32\\imageres.dll"
-    # Індекс 14 в imageres.dll зазвичай відповідає стандартній іконці невідомого додатка/файлу
+
     try:
+        # Save the icon directly to a PNG file
+        png_path = "icon_14.png"
+        save_dll_icon_to_png(
+            dll, icon_index=14, output_file_path=png_path, icon_size=48
+        )
+        print(f"Icon successfully saved to file: {png_path}")
+
+        # Get Data URI
         data_uri = get_dll_icon_as_data_uri(dll, icon_index=14, icon_size=48)
-        print("Згенерований Data URI (перші 100 символів):")
+        print("Generated Data URI (first 100 characters):")
         print(data_uri[:100] + "...")
     except Exception as e:
-        print(f"Помилка: {e}")
+        print(f"Error: {e}")
