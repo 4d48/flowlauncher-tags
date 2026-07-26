@@ -24,8 +24,13 @@ class TagManager:
         self._tag_to_programs[tag].add(program)
 
     def remove(self, program: Program, tag: str):
-        if tag in self._tag_to_programs:
-            self._tag_to_programs[tag].discard(program)
+        if tag not in self._tag_to_programs:
+            return
+
+        self._tag_to_programs[tag].discard(program)
+
+        if not self._tag_to_programs[tag]:
+            _ = self._tag_to_programs.pop(tag, None)
 
     def search_by_tag(self, tag: str) -> set[Program]:
         return self._tag_to_programs.get(tag, set())

@@ -92,6 +92,9 @@ class LaunchProgramResult(Result):
             await self.api.show_error_message(
                 "Couldn't launch program", "Program path is not specified"
             )
+
+        await self.api.change_query("", requery=False)
+
         return ExecuteResponse(hide=True)
 
 
@@ -118,6 +121,8 @@ class AddTagToProgramResult(Result):
         await self.api.show_notification(
             "Success!", f"Added tag '{self.tag}' to program '{self.program.name}'"
         )
+        await self.api.change_query("", requery=False)
+
         return ExecuteResponse(hide=True)
 
 
@@ -144,6 +149,8 @@ class RemoveTagFromProgramResult(Result):
         await self.api.show_notification(
             "Success!", f"Removed tag '{self.tag}' from program '{self.program.name}'"
         )
+        await self.api.change_query("", requery=False)
+
         return ExecuteResponse(hide=True)
 
 
