@@ -1,5 +1,3 @@
-# ruff: noqa: E402
-
 import sys
 from pathlib import Path
 
@@ -8,6 +6,7 @@ sys.path.insert(0, str(plugindir / ".venv" / "Lib" / "site-packages"))
 
 import logging
 import os
+from collections.abc import Iterable
 from typing import Unpack, override
 
 from flogin import (
@@ -46,6 +45,8 @@ PLUGIN_DATADIR.mkdir(parents=True, exist_ok=True)
 
 TAGS_FILE_PATH = PLUGIN_DATADIR / "tags.json"
 PROGRAMS_FILE_PATH = PLUGIN_DATADIR / "programs.json"
+
+ICON_MISSING_PATH = Path("Images") / "icon_missing.png"
 
 logging.basicConfig(
     filename=PLUGIN_DATADIR / "plugin.log",
@@ -156,7 +157,7 @@ class TagsPlugin(Plugin):
         self.program_manager: ProgramManager
         self.tag_manager: TagManager
 
-    @Plugin.event
+    @Plugin.event  # pyright: ignore[reportUnknownMemberType, reportUntypedFunctionDecorator]
     async def on_initialization(self):
         try:
             self.program_manager = ProgramManager.from_file(PROGRAMS_FILE_PATH)
@@ -224,7 +225,7 @@ class TagsPlugin(Plugin):
                 LaunchProgramResult(
                     title=f"{program.name}",
                     query_suggestion_text=f"{program.name}",
-                    icon=program.icon_to_data_uri("Images/transparent.png"),
+                    icon=program.icon_to_data_uri(str(ICON_MISSING_PATH)),
                     program=program,
                     api=self.api,
                 )
@@ -235,17 +236,18 @@ class TagsPlugin(Plugin):
     def get_programs_add_tag_action(self, tag: str, prefix: str) -> list[Result]:
         results: list[Result] = []
 
-        if prefix:
-            programs_found: list[Program] = self.program_manager.find(prefix)
-        else:
-            programs_found = self.program_manager.programs
+        programs_by_tag: set[Program] = self.tag_manager.search_by_tag(tag)
+
+        programs_found: set[Program] = (
+            self.program_manager.find(prefix) - programs_by_tag
+        )
 
         for program in programs_found:
             results.append(
                 AddTagToProgramResult(
                     title=f"{program.name}",
                     query_suggestion_text=f"{program.name}",
-                    icon=program.icon_to_data_uri("Images/transparent.png"),
+                    icon=program.icon_to_data_uri(str(ICON_MISSING_PATH)),
                     tag=tag,
                     program=program,
                     tag_manager=self.tag_manager,
@@ -258,17 +260,21 @@ class TagsPlugin(Plugin):
     def get_programs_remove_tag_action(self, tag: str, prefix: str) -> list[Result]:
         results: list[Result] = []
 
+        programs_by_tag: set[Program] = self.tag_manager.search_by_tag(tag)
+
         if prefix:
-            programs_found: list[Program] = self.program_manager.find(prefix)
+            programs_found: set[Program] = self.program_manager.find(
+                prefix, programs_by_tag
+            )
         else:
-            programs_found = self.program_manager.programs
+            programs_found = programs_by_tag
 
         for program in programs_found:
             results.append(
                 RemoveTagFromProgramResult(
                     title=f"{program.name}",
                     query_suggestion_text=f"{program.name}",
-                    icon=program.icon_to_data_uri("Images/transparent.png"),
+                    icon=program.icon_to_data_uri(str(ICON_MISSING_PATH)),
                     tag=tag,
                     tag_manager=self.tag_manager,
                     program=program,
@@ -319,7 +325,7 @@ class TagsPlugin(Plugin):
         results: list[Result] = []
 
         if prefix:
-            programs_found: list[Program] = self.program_manager.find(prefix)
+            programs_found: Iterable[Program] = self.program_manager.find(prefix)
         else:
             programs_found = self.program_manager.programs
 
@@ -328,7 +334,7 @@ class TagsPlugin(Plugin):
                 ChangeQueryResult(
                     title=f"{program.name}",
                     query_suggestion_text=f"{program.name}",
-                    icon=program.icon_to_data_uri("Images/transparent.png"),
+                    icon=program.icon_to_data_uri(str(ICON_MISSING_PATH)),
                     new_query=f"{base_query}{program.name} ",
                     api=self.api,
                 )
@@ -362,7 +368,8 @@ class TagsPlugin(Plugin):
             case [AutocompleteType.TAG]:
                 result = self.autocomplete_tag(base_query, context.prefix)
             case [AutocompleteType.PROGRAM]:
-                result = self.autocomplete_program(base_query, context.prefix)
+                # result = self.autocomplete_program(base_query, context.prefix)
+                result = []
             case [AutocompleteType.ADD_TAG_PROGRAM]:
                 tag_name = context.args["tag_name"]  # should not fail
                 result = self.get_programs_add_tag_action(tag_name, context.prefix)

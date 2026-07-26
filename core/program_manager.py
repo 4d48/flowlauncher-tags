@@ -1,5 +1,6 @@
 import difflib
 import json
+from collections.abc import Iterable
 from dataclasses import asdict
 from pathlib import Path
 from typing import Self
@@ -74,47 +75,65 @@ class ProgramManager:
         with open(path, "w", encoding="utf-8") as f:
             json.dump(program_data, f)
 
-    def find_one(self, name: str) -> Program | None:
+    def find_one(
+        self, name: str, programs: Iterable[Program] | None = None
+    ) -> Program | None:
         """
         Find program that exactly matches the given criteria.
 
         Args:
             name: The name of the program to find.
+            programs: An Iterable in which search is performed.
 
         Returns:
             A first Program object that exactly matches the criteria or None if no match is found.
+
+        If `programs` set to `None`, search is performed over internal state.
         """
-        for program in self._programs:
+        if not programs:
+            programs = self._programs
+
+        for program in programs:
             if program.name == name:
                 return program
 
         return None
 
-    def find(self, name: str) -> list[Program]:
+    def find(
+        self, name: str, programs: Iterable[Program] | None = None
+    ) -> set[Program]:
         """
         Find programs that match the given criteria.
         Prioritizes substring matches, falls back to fuzzy search for typos.
 
         Args:
             name: The name of the program to find.
+            programs: An Iterable in which search is performed.
 
         Returns:
-            A list of Program objects that match the criteria.
+            A set of Program objects that match the criteria.
+
+        If `programs` set to `None`, search is performed over internal state.
         """
+        if not name:
+            return set(self._programs)
+
+        if not programs:
+            programs = self._programs
 
         matches: dict[str, Program] = {
             program.name: program
-            for program in self._programs
+            for program in programs
             if name in program.name.lower()
         }
 
-        program_dict = {program.name: program for program in self._programs}
+        program_dict = {program.name: program for program in programs}
 
         fuzzy_matches: list[str] = difflib.get_close_matches(
             name, program_dict.keys(), n=10, cutoff=0.4
         )
 
-        for name in fuzzy_matches:
-            matches[name] = program_dict[name]
+        for prog_name in fuzzy_matches:
+            matches[prog_name] = program_dict[prog_name]
 
-        return list(matches.values())
+        return set(matches.values())

@@ -8,11 +8,10 @@ from core.programs import Program
 
 
 class TagManager:
-    def __init__(self, tag_to_programs: dict[str, list[Program]] | None = None):
-        self._tag_to_programs: dict[str, list[Program]] = (
+    def __init__(self, tag_to_programs: dict[str, set[Program]] | None = None):
+        self._tag_to_programs: dict[str, set[Program]] = (
             tag_to_programs if tag_to_programs is not None else {}
         )
-        # self._program_to_tags: dict[Program, list[str]] = {}
 
     @property
     def tags(self) -> set[str]:
@@ -20,21 +19,16 @@ class TagManager:
 
     def add(self, program: Program, tag: str):
         if tag not in self._tag_to_programs:
-            self._tag_to_programs[tag] = []
+            self._tag_to_programs[tag] = set()
 
-        self._tag_to_programs[tag].append(program)
-
-        # if program not in self._program_to_tags:
-        #     self._program_to_tags[program] = []
-
-        # self._program_to_tags[program].append(tag)
+        self._tag_to_programs[tag].add(program)
 
     def remove(self, program: Program, tag: str):
-        if tag in self._tag_to_programs and program in self._tag_to_programs[tag]:
-            self._tag_to_programs[tag].remove(program)
+        if tag in self._tag_to_programs:
+            self._tag_to_programs[tag].discard(program)
 
-    def search_by_tag(self, tag: str) -> list[Program]:
-        return self._tag_to_programs.get(tag, [])
+    def search_by_tag(self, tag: str) -> set[Program]:
+        return self._tag_to_programs.get(tag, set())
 
     @classmethod
     def from_file(cls, path: Path) -> Self:
@@ -42,7 +36,7 @@ class TagManager:
             raw_data = json.load(f)
 
         tag_to_programs = {
-            tag: [Program(**prog_dict) for prog_dict in programs_list]
+            tag: {Program(**prog_dict) for prog_dict in programs_list}
             for tag, programs_list in raw_data.items()
         }
 
@@ -71,4 +65,4 @@ class TagManager:
             name, self._tag_to_programs.keys(), n=10, cutoff=0.5
         )
 
-        return [tag for tag in matches]
+        return matches
