@@ -1,0 +1,249 @@
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJkaXNwbGF5OiBub25lOyI+CiAgPHN5bWJvbCBpZD0ic3ZnLXRvYyIgdmlld2JveD0iMCAwIDI0IDI0Ij4KICAgIDx0aXRsZT5Db250ZW50czwvdGl0bGU+CiAgICA8c3ZnIHN0cm9rZT0iY3VycmVudENvbG9yIiBmaWxsPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMCIgdmlld2JveD0iMCAwIDEwMjQgMTAyNCI+CiAgICAgIDxwYXRoIGQ9Ik00MDggNDQyaDQ4MGM0LjQgMCA4LTMuNiA4LTh2LTU2YzAtNC40LTMuNi04LTgtOEg0MDhjLTQuNCAwLTggMy42LTggOHY1NmMwIDQuNCAzLjYgOCA4IDh6bS04IDIwNGMwIDQuNCAzLjYgOCA4IDhoNDgwYzQuNCAwIDgtMy42IDgtOHYtNTZjMC00LjQtMy42LTgtOC04SDQwOGMtNC40IDAtOCAzLjYtOCA4djU2em01MDQtNDg2SDEyMGMtNC40IDAtOCAzLjYtOCA4djU2YzAgNC40IDMuNiA4IDggOGg3ODRjNC40IDAgOC0zLjYgOC04di01NmMwLTQuNC0zLjYtOC04LTh6bTAgNjMySDEyMGMtNC40IDAtOCAzLjYtOCA4djU2YzAgNC40IDMuNiA4IDggOGg3ODRjNC40IDAgOC0zLjYgOC04di01NmMwLTQuNC0zLjYtOC04LTh6TTExNS40IDUxOC45TDI3MS43IDY0MmM1LjggNC42IDE0LjQuNSAxNC40LTYuOVYzODguOWMwLTcuNC04LjUtMTEuNS0xNC40LTYuOUwxMTUuNCA1MDUuMWE4Ljc0IDguNzQgMCAwIDAgMCAxMy44eiIgLz4KICAgIDwvc3ZnPg==)
+
+Menu
+
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iZmVhdGhlci1tZW51Ij4KICAgICAgPGxpbmUgeDE9IjMiIHkxPSIxMiIgeDI9IjIxIiB5Mj0iMTIiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjMiIHkxPSI2IiB4Mj0iMjEiIHkyPSI2Ij48L2xpbmU+CiAgICAgIDxsaW5lIHgxPSIzIiB5MT0iMTgiIHgyPSIyMSIgeTI9IjE4Ij48L2xpbmU+CiAgICA8L3N2Zz4=){.feather-menu}
+
+Expand
+
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iZmVhdGhlci1jaGV2cm9uLXJpZ2h0Ij4KICAgICAgPHBvbHlsaW5lIHBvaW50cz0iOSAxOCAxNSAxMiA5IDYiPjwvcG9seWxpbmU+CiAgICA8L3N2Zz4=){.feather-chevron-right}
+
+Light mode
+
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iZmVhdGhlci1zdW4iPgogICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI1Ij48L2NpcmNsZT4KICAgICAgPGxpbmUgeDE9IjEyIiB5MT0iMSIgeDI9IjEyIiB5Mj0iMyI+PC9saW5lPgogICAgICA8bGluZSB4MT0iMTIiIHkxPSIyMSIgeDI9IjEyIiB5Mj0iMjMiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjQuMjIiIHkxPSI0LjIyIiB4Mj0iNS42NCIgeTI9IjUuNjQiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjE4LjM2IiB5MT0iMTguMzYiIHgyPSIxOS43OCIgeTI9IjE5Ljc4Ij48L2xpbmU+CiAgICAgIDxsaW5lIHgxPSIxIiB5MT0iMTIiIHgyPSIzIiB5Mj0iMTIiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjIxIiB5MT0iMTIiIHgyPSIyMyIgeTI9IjEyIj48L2xpbmU+CiAgICAgIDxsaW5lIHgxPSI0LjIyIiB5MT0iMTkuNzgiIHgyPSI1LjY0IiB5Mj0iMTguMzYiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjE4LjM2IiB5MT0iNS42NCIgeDI9IjE5Ljc4IiB5Mj0iNC4yMiI+PC9saW5lPgogICAgPC9zdmc+){.feather-sun}
+
+Dark mode
+
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iaWNvbi10YWJsZXItbW9vbiI+CiAgICAgIDxwYXRoIHN0cm9rZT0ibm9uZSIgZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIgLz4KICAgICAgPHBhdGggZD0iTTEyIDNjLjEzMiAwIC4yNjMgMCAuMzkzIDBhNy41IDcuNSAwIDAgMCA3LjkyIDEyLjQ0NmE5IDkgMCAxIDEgLTguMzEzIC0xMi40NTR6IiAvPgogICAgPC9zdmc+){.icon-tabler-moon}
+
+Auto light/dark, in light mode
+
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iaWNvbi1jdXN0b20tZGVyaXZlZC1mcm9tLWZlYXRoZXItc3VuLWFuZC10YWJsZXItbW9vbiI+CiAgICAgIDxwYXRoIHN0eWxlPSJvcGFjaXR5OiA1MCUiIGQ9Ik0gNS40MTEgMTQuNTA0IEMgNS40NzEgMTQuNTA0IDUuNTMyIDE0LjUwNCA1LjU5MSAxNC41MDQgQyAzLjYzOSAxNi4zMTkgNC4zODMgMTkuNTY5IDYuOTMxIDIwLjM1MiBDIDcuNjkzIDIwLjU4NiA4LjUxMiAyMC41NTEgOS4yNSAyMC4yNTIgQyA4LjAyMyAyMy4yMDcgNC4wNTYgMjMuNzI1IDIuMTEgMjEuMTg0IEMgMC4xNjYgMTguNjQyIDEuNzAyIDE0Ljk0OSA0Ljg3NCAxNC41MzYgQyA1LjA1MSAxNC41MTIgNS4yMzEgMTQuNSA1LjQxMSAxNC41IEwgNS40MTEgMTQuNTA0IFoiIC8+CiAgICAgIDxsaW5lIHgxPSIxNC41IiB5MT0iMy4yNSIgeDI9IjE0LjUiIHkyPSIxLjI1Ij48L2xpbmU+CiAgICAgIDxsaW5lIHgxPSIxNC41IiB5MT0iMTUuODUiIHgyPSIxNC41IiB5Mj0iMTcuODUiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjEwLjA0NCIgeTE9IjUuMDk0IiB4Mj0iOC42MyIgeTI9IjMuNjgiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjE5IiB5MT0iMTQuMDUiIHgyPSIyMC40MTQiIHkyPSIxNS40NjQiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjguMiIgeTE9IjkuNTUiIHgyPSI2LjIiIHkyPSI5LjU1Ij48L2xpbmU+CiAgICAgIDxsaW5lIHgxPSIyMC44IiB5MT0iOS41NSIgeDI9IjIyLjgiIHkyPSI5LjU1Ij48L2xpbmU+CiAgICAgIDxsaW5lIHgxPSIxMC4wNDQiIHkxPSIxNC4wMDYiIHgyPSI4LjYzIiB5Mj0iMTUuNDIiPjwvbGluZT4KICAgICAgPGxpbmUgeDE9IjE5IiB5MT0iNS4wNSIgeDI9IjIwLjQxNCIgeTI9IjMuNjM2Ij48L2xpbmU+CiAgICAgIDxjaXJjbGUgY3g9IjE0LjUiIGN5PSI5LjU1IiByPSIzLjYiPjwvY2lyY2xlPgogICAgPC9zdmc+){.icon-custom-derived-from-feather-sun-and-tabler-moon}
+
+Auto light/dark, in dark mode
+
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iaWNvbi1jdXN0b20tZGVyaXZlZC1mcm9tLWZlYXRoZXItc3VuLWFuZC10YWJsZXItbW9vbiI+CiAgICAgIDxwYXRoIGQ9Ik0gOC4yODIgNy4wMDcgQyA4LjM4NSA3LjAwNyA4LjQ5NCA3LjAwNyA4LjU5NSA3LjAwNyBDIDUuMTggMTAuMTg0IDYuNDgxIDE1Ljg2OSAxMC45NDIgMTcuMjQgQyAxMi4yNzUgMTcuNjQ4IDEzLjcwNiAxNy41ODkgMTUgMTcuMDY2IEMgMTIuODUxIDIyLjIzNiA1LjkxIDIzLjE0MyAyLjUwNSAxOC42OTYgQyAtMC44OTcgMTQuMjQ5IDEuNzkxIDcuNzg2IDcuMzQyIDcuMDYzIEMgNy42NTIgNy4wMjEgNy45NjUgNyA4LjI4MiA3IEwgOC4yODIgNy4wMDcgWiIgLz4KICAgICAgPGxpbmUgc3R5bGU9Im9wYWNpdHk6IDUwJSIgeDE9IjE4IiB5MT0iMy43MDUiIHgyPSIxOCIgeTI9IjIuNSI+PC9saW5lPgogICAgICA8bGluZSBzdHlsZT0ib3BhY2l0eTogNTAlIiB4MT0iMTgiIHkxPSIxMS4yOTUiIHgyPSIxOCIgeTI9IjEyLjUiPjwvbGluZT4KICAgICAgPGxpbmUgc3R5bGU9Im9wYWNpdHk6IDUwJSIgeDE9IjE1LjMxNiIgeTE9IjQuODE2IiB4Mj0iMTQuNDY0IiB5Mj0iMy45NjQiPjwvbGluZT4KICAgICAgPGxpbmUgc3R5bGU9Im9wYWNpdHk6IDUwJSIgeDE9IjIwLjcxMSIgeTE9IjEwLjIxMiIgeDI9IjIxLjU2MyIgeTI9IjExLjA2MyI+PC9saW5lPgogICAgICA8bGluZSBzdHlsZT0ib3BhY2l0eTogNTAlIiB4MT0iMTQuMjA1IiB5MT0iNy41IiB4Mj0iMTMuMDAxIiB5Mj0iNy41Ij48L2xpbmU+CiAgICAgIDxsaW5lIHN0eWxlPSJvcGFjaXR5OiA1MCUiIHgxPSIyMS43OTUiIHkxPSI3LjUiIHgyPSIyMyIgeTI9IjcuNSI+PC9saW5lPgogICAgICA8bGluZSBzdHlsZT0ib3BhY2l0eTogNTAlIiB4MT0iMTUuMzE2IiB5MT0iMTAuMTg0IiB4Mj0iMTQuNDY0IiB5Mj0iMTEuMDM2Ij48L2xpbmU+CiAgICAgIDxsaW5lIHN0eWxlPSJvcGFjaXR5OiA1MCUiIHgxPSIyMC43MTEiIHkxPSI0Ljc4OSIgeDI9IjIxLjU2MyIgeTI9IjMuOTM3Ij48L2xpbmU+CiAgICAgIDxjaXJjbGUgc3R5bGU9Im9wYWNpdHk6IDUwJSIgY3g9IjE4IiBjeT0iNy41IiByPSIyLjE2OSI+PC9jaXJjbGU+CiAgICA8L3N2Zz4=){.icon-custom-derived-from-feather-sun-and-tabler-moon}
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iaWNvbi10YWJsZXItcGVuY2lsLWNvZGUiPgogICAgICA8cGF0aCBkPSJNNCAyMGg0bDEwLjUgLTEwLjVhMi44MjggMi44MjggMCAxIDAgLTQgLTRsLTEwLjUgMTAuNXY0IiAvPgogICAgICA8cGF0aCBkPSJNMTMuNSA2LjVsNCA0IiAvPgogICAgICA8cGF0aCBkPSJNMjAgMjFsMiAtMmwtMiAtMiIgLz4KICAgICAgPHBhdGggZD0iTTE3IDE3bC0yIDJsMiAyIiAvPgogICAgPC9zdmc+){.icon-tabler-pencil-code}
+![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iaWNvbi10YWJsZXItZXllLWNvZGUiPgogICAgICA8cGF0aCBzdHJva2U9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiIC8+CiAgICAgIDxwYXRoIGQ9Ik0xMCAxMmEyIDIgMCAxIDAgNCAwYTIgMiAwIDAgMCAtNCAwIiAvPgogICAgICA8cGF0aCBkPSJNMTEuMTEgMTcuOTU4Yy0zLjIwOSAtLjMwNyAtNS45MSAtMi4yOTMgLTguMTEgLTUuOTU4YzIuNCAtNCA1LjQgLTYgOSAtNmMzLjYgMCA2LjYgMiA5IDZjLS4yMSAuMzUyIC0uNDI3IC42ODggLS42NDcgMS4wMDgiIC8+CiAgICAgIDxwYXRoIGQ9Ik0yMCAyMWwyIC0ybC0yIC0yIiAvPgogICAgICA8cGF0aCBkPSJNMTcgMTdsLTIgMmwyIDIiIC8+CiAgICA8L3N2Zz4=){.icon-tabler-eye-code}
+
+[Skip to content](#furo-main-content){.skip-to-content .muted-link}
+
+:::::::::::::::::::::::::::::::::::::::::::::::: page
+:::::::: {.header .mobile-header}
+::: header-left
+[![](data:image/svg+xml;base64,PHN2Zz48dXNlIGhyZWY9IiNzdmctbWVudSIgLz48L3N2Zz4=)]{.icon}
+:::
+
+:::: header-center
+[](index.html)
+
+::: brand
+flogin 2.0.0a documentation
+:::
+::::
+
+:::: header-right
+::: {.theme-toggle-container .theme-toggle-header}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idGhlbWUtaWNvbi13aGVuLWF1dG8tbGlnaHQiPjx1c2UgaHJlZj0iI3N2Zy1zdW4td2l0aC1tb29uIiAvPjwvc3ZnPg==){.theme-icon-when-auto-light}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idGhlbWUtaWNvbi13aGVuLWF1dG8tZGFyayI+PHVzZSBocmVmPSIjc3ZnLW1vb24td2l0aC1zdW4iIC8+PC9zdmc+){.theme-icon-when-auto-dark}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idGhlbWUtaWNvbi13aGVuLWRhcmsiPjx1c2UgaHJlZj0iI3N2Zy1tb29uIiAvPjwvc3ZnPg==){.theme-icon-when-dark}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idGhlbWUtaWNvbi13aGVuLWxpZ2h0Ij48dXNlIGhyZWY9IiNzdmctc3VuIiAvPjwvc3ZnPg==){.theme-icon-when-light}
+:::
+
+[![](data:image/svg+xml;base64,PHN2Zz48dXNlIGhyZWY9IiNzdmctdG9jIiAvPjwvc3ZnPg==)]{.icon}
+::::
+::::::::
+
+:::::::: {.aside .sidebar-drawer}
+::::::: sidebar-container
+:::::: sidebar-sticky
+[[flogin 2.0.0a
+documentation]{.sidebar-brand-text}](index.html){.sidebar-brand}
+
+::: {#searchbox}
+:::
+
+:::: sidebar-scroll
+::: sidebar-tree
+[First Steps]{.caption-text}
+
+- [Introduction](intro.html){.reference .internal}
+- [Quickstart](quickstart.html){.reference .internal}
+
+[References]{.caption-text}
+
+- [API Reference](api.html){.reference .internal}
+- [Event Reference](events.html){.reference .internal}
+
+[Manuals/Guides]{.caption-text}
+
+- [Search Handlers](search_handlers.html){.reference .internal}
+- [Testing your plugin](testing.html){.reference .internal}
+- [Installing your plugin](#){.current .reference .internal}
+- [Plugin Settings](settings.html){.reference .internal}
+- [Writing Complex Plugins](complex_plugins.html){.reference .internal}
+- [Log Override Files](log-override-files.html){.reference .internal}
+- [Frequently Asked Questions](faq.html){.reference .internal}
+
+[Library Meta]{.caption-text}
+
+- [Whats New](whats_new.html){.reference .internal}
+- [Version Guarantees](version_guarantees.html){.reference .internal}
+:::
+::::
+::::::
+:::::::
+::::::::
+
+::::::::::::::::::::::::::::::::::: main
+::::::::::::::::::::::::::::: content
+::::::::::::::::: article-container
+[![](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdib3g9IjAgMCAyNCAyNCI+CiAgICAgICAgICAgIDxwYXRoIGQ9Ik0xMyAyMGgtMlY4bC01LjUgNS41LTEuNDItMS40MkwxMiA0LjE2bDcuOTIgNy45Mi0xLjQyIDEuNDJMMTMgOHYxMnoiIC8+CiAgICAgICAgICA8L3N2Zz4=)
+Back to top](#){.back-to-top .muted-link}
+
+::::: content-icon-container
+::: view-this-page
+[![](data:image/svg+xml;base64,PHN2Zz48dXNlIGhyZWY9IiNzdmctZXllIiAvPjwvc3ZnPg==)
+[View this
+page]{.visually-hidden}](_sources/install_plugin.rst.txt "View this page"){.muted-link}
+:::
+
+::: {.theme-toggle-container .theme-toggle-content}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idGhlbWUtaWNvbi13aGVuLWF1dG8tbGlnaHQiPjx1c2UgaHJlZj0iI3N2Zy1zdW4td2l0aC1tb29uIiAvPjwvc3ZnPg==){.theme-icon-when-auto-light}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idGhlbWUtaWNvbi13aGVuLWF1dG8tZGFyayI+PHVzZSBocmVmPSIjc3ZnLW1vb24td2l0aC1zdW4iIC8+PC9zdmc+){.theme-icon-when-auto-dark}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idGhlbWUtaWNvbi13aGVuLWRhcmsiPjx1c2UgaHJlZj0iI3N2Zy1tb29uIiAvPjwvc3ZnPg==){.theme-icon-when-dark}
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0idGhlbWUtaWNvbi13aGVuLWxpZ2h0Ij48dXNlIGhyZWY9IiNzdmctc3VuIiAvPjwvc3ZnPg==){.theme-icon-when-light}
+:::
+
+[![](data:image/svg+xml;base64,PHN2Zz48dXNlIGhyZWY9IiNzdmctdG9jIiAvPjwvc3ZnPg==)]{.icon}
+:::::
+
+::::::::::::: {#installing-your-plugin .section}
+# Installing your plugin[¶](#installing-your-plugin "Link to this heading"){.headerlink}
+
+:::::::::::: {#installing .section}
+## Installing[¶](#installing "Link to this heading"){.headerlink}
+
+Now that you have your plugin setup and ready to be installed, here are
+the different ways you can install it:
+
+::: {#manually .section}
+[]{#manual-install-instructions}
+
+### Manually[¶](#manually "Link to this heading"){.headerlink}
+
+To test your plugin with flow itself, you will have to clone your plugin
+into your userdata folder. To do this, use the [`UserData`{.docutils
+.literal .notranslate}]{.pre} command with the [`System`{.docutils
+.literal .notranslate}]{.pre}` `{.docutils .literal
+.notranslate}[`Commands`{.docutils .literal .notranslate}]{.pre} plugin
+to find your userdata folder, head into the [`Plugins`{.docutils
+.literal .notranslate}]{.pre} folder, create a new folder for your
+plugin, and clone the contents into it. Then, restart flow for the
+plugin to be activated and run.
+:::
+
+:::::::::: {#from-zip .section}
+### From zip[¶](#from-zip "Link to this heading"){.headerlink}
+
+::: {.admonition .note}
+Note
+
+This is useful when installing a specific version of a plugin from a
+github release
+:::
+
+To install a plugin from a zip file, start by getting a direct url or to
+it. For example:
+[`https://github.com/cibere/Flow.Launcher.Plugin.rtfm/releases/download/v0.2.1/Flow.Launcher.Plugin.rtfm.zip`{.docutils
+.literal .notranslate}]{.pre} or
+[`C:\Users\default.MyPC\Downloads\Flow.Launcher.Plugin.rtfm.zip`{.docutils
+.literal .notranslate}]{.pre}. Next run the following command with flow:
+
+:::: {.highlight-default .notranslate}
+::: highlight
+    pm install <url or path>
+:::
+::::
+
+so in my case, I would run:
+
+:::: {.highlight-default .notranslate}
+::: highlight
+    pm install https://github.com/cibere/Flow.Launcher.Plugin.rtfm/releases/download/v0.2.1/Flow.Launcher.Plugin.rtfm.zip
+:::
+::::
+
+or
+
+:::: {.highlight-default .notranslate}
+::: highlight
+    pm install C:\Users\default.MyPC\Downloads\Flow.Launcher.Plugin.rtfm.zip
+:::
+::::
+::::::::::
+::::::::::::
+:::::::::::::
+:::::::::::::::::
+
+::::::::: related-pages
+[](settings.html){.next-page}
+
+::::: page-info
+::: context
+Next
+:::
+
+::: title
+Plugin Settings
+:::
+:::::
+
+![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iZnVyby1yZWxhdGVkLWljb24iPjx1c2UgaHJlZj0iI3N2Zy1hcnJvdy1yaWdodCIgLz48L3N2Zz4=){.furo-related-icon}
+[![](data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iZnVyby1yZWxhdGVkLWljb24iPjx1c2UgaHJlZj0iI3N2Zy1hcnJvdy1yaWdodCIgLz48L3N2Zz4=){.furo-related-icon}](testing.html){.prev-page}
+
+::::: page-info
+::: context
+Previous
+:::
+
+::: title
+Testing your plugin
+:::
+:::::
+:::::::::
+
+:::::: bottom-of-page
+:::: left-details
+::: copyright
+Copyright © 2026, cibere
+:::
+
+Made with [Sphinx](https://www.sphinx-doc.org/) and
+[\@pradyunsg](https://pradyunsg.me){.muted-link}\'s
+[Furo](https://github.com/pradyunsg/furo)
+::::
+
+::: right-details
+:::
+::::::
+:::::::::::::::::::::::::::::
+
+::::::: {.aside .toc-drawer}
+:::::: {.toc-sticky .toc-scroll}
+::: toc-title-container
+[ On this page ]{.toc-title}
+:::
+
+:::: toc-tree-container
+::: toc-tree
+- [Installing your plugin](#){.reference .internal}
+  - [Installing](#installing){.reference .internal}
+    - [Manually](#manually){.reference .internal}
+    - [From zip](#from-zip){.reference .internal}
+:::
+::::
+::::::
+:::::::
+:::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
