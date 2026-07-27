@@ -1,3 +1,16 @@
+[project]
+name = "flowlauncher-tags"
+version = "1.0.0"
+dependencies = [
+    "flogin @ git+https://github.com/cibere/flogin.git@0971f2b",
+    "Pillow",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
 [tool.basedpyright]
 typeCheckingMode = "all"
 venvPath = "."
