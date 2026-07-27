@@ -318,16 +318,16 @@ def get_all_installed_programs() -> list[Program]:
 
 
 if __name__ == "__main__":
-    print("Збираю інформацію з реєстру...\n")
+    print("Gathering information from the registry...\n")
     installed_programs = get_all_installed_programs()
 
-    print(f"Загалом знайдено унікальних програм: {len(installed_programs)}")
+    print(f"Total unique programs found: {len(installed_programs)}")
     print("-" * 60)
 
     for idx, prog in enumerate(installed_programs, 1):
         print(f"{idx}. {prog.name}")
-        print(f"   Версія: {prog.version}")
-        print(f"   Папка установки: {prog.folder}")
-        print(f"   Іконка: {prog.icon}")
-        print(f"   Шлях: {prog.path}")
+        print(f"   Version: {prog.version}")
+        print(f"   Install directory: {prog.folder}")
+        print(f"   Icon: {prog.icon}")
+        print(f"   Path: {prog.path}")
         print("-" * 60)
