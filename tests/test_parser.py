@@ -12,6 +12,14 @@ from core.parser import (
 
 
 def parse_input(input: str) -> ParserResult:
+    """Helper function to tokenize and parse an input string into a ParserResult.
+
+    Args:
+        input: The raw query input string.
+
+    Returns:
+        The resulting ParserResult.
+    """
     lexer = Lexer(input)
     parser = Parser()
 
@@ -36,6 +44,12 @@ def parse_input(input: str) -> ParserResult:
     ],
 )
 def test_empty_input(input: str, expected_result: ParserResult):
+    """Test parsing of empty input string.
+
+    Args:
+        input: The input query string.
+        expected_result: The expected ParserResult object.
+    """
     lexer = Lexer(input)
     parser = Parser()
 
@@ -69,6 +83,12 @@ def test_empty_input(input: str, expected_result: ParserResult):
     ],
 )
 def test_space_input(input: str, expected_result: ParserResult):
+    """Test parsing of whitespace-only input strings.
+
+    Args:
+        input: The whitespace input query string.
+        expected_result: The expected ParserResult object.
+    """
     assert parse_input(input) == expected_result
 
 
@@ -128,6 +148,12 @@ def test_space_input(input: str, expected_result: ParserResult):
     ],
 )
 def test_add_command(input: str, expected_result: ParserResult):
+    """Test parsing of add tag command queries.
+
+    Args:
+        input: The input query string.
+        expected_result: The expected ParserResult object.
+    """
     assert parse_input(input) == expected_result
 
 
@@ -187,4 +213,10 @@ def test_add_command(input: str, expected_result: ParserResult):
     ],
 )
 def test_remove_command(input: str, expected_result: ParserResult):
+    """Test parsing of remove tag command queries.
+
+    Args:
+        input: The input query string.
+        expected_result: The expected ParserResult object.
+    """
     assert parse_input(input) == expected_result

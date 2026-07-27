@@ -12,6 +12,11 @@ class ProgramManager:
     """Manages loading, saving, and retrieving installed programs."""
 
     def __init__(self, programs: list[Program] | None = None):
+        """Initialize a ProgramManager instance.
+
+        Args:
+            programs: An optional list of Program instances to populate the manager.
+        """
         self._programs: list[Program] = programs if programs is not None else []
 
     @property

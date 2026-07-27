@@ -65,35 +65,63 @@ logger = logging.getLogger(__name__)
 
 
 class ChangeQueryResult(Result):
+    """Result item that updates the Flow Launcher search query upon execution."""
+
     def __init__(
         self,
         new_query: str,
         api: FlowLauncherAPI,
         **kwargs: Unpack[ResultConstructorKwargs],
     ):
+        """Initialize a ChangeQueryResult instance.
+
+        Args:
+            new_query: The new query string to set in Flow Launcher.
+            api: The Flow Launcher API instance.
+            **kwargs: Additional keyword arguments passed to the Result constructor.
+        """
         super().__init__(**kwargs)
         self.new_query: str = new_query
         self.api: FlowLauncherAPI = api
 
     @override
     async def callback(self):
+        """Execute the action to update the Flow Launcher search query.
+
+        Returns:
+            An ExecuteResponse specifying UI behavior after execution.
+        """
         await self.api.change_query(self.new_query, requery=False)
         return ExecuteResponse(hide=False)
 
 
 class LaunchProgramResult(Result):
+    """Result item that launches a specified program upon execution."""
+
     def __init__(
         self,
         program: Program,
         api: FlowLauncherAPI,
         **kwargs: Unpack[ResultConstructorKwargs],
     ):
+        """Initialize a LaunchProgramResult instance.
+
+        Args:
+            program: The Program instance to be launched.
+            api: The Flow Launcher API instance.
+            **kwargs: Additional keyword arguments passed to the Result constructor.
+        """
         super().__init__(**kwargs)
         self.program: Program = program
         self.api: FlowLauncherAPI = api
 
     @override
     async def callback(self):
+        """Launch the associated program and reset the search query.
+
+        Returns:
+            An ExecuteResponse specifying that the launcher UI should hide.
+        """
         # if self.program.launch() is None:
         #     await self.api.show_error_message(
         #         "Couldn't launch program", "Program path is not specified"
@@ -107,6 +135,8 @@ class LaunchProgramResult(Result):
 
 
 class AddTagToProgramResult(Result):
+    """Result item that attaches a tag to a program upon execution."""
+
     def __init__(
         self,
         tag: str,
@@ -115,6 +145,15 @@ class AddTagToProgramResult(Result):
         api: FlowLauncherAPI,
         **kwargs: Unpack[ResultConstructorKwargs],
     ):
+        """Initialize an AddTagToProgramResult instance.
+
+        Args:
+            tag: The tag name to add.
+            program: The target Program instance.
+            tag_manager: The TagManager handling tag data persistence.
+            api: The Flow Launcher API instance.
+            **kwargs: Additional keyword arguments passed to the Result constructor.
+        """
         super().__init__(**kwargs)
         self.tag: str = tag
         self.program: Program = program
@@ -123,6 +162,11 @@ class AddTagToProgramResult(Result):
 
     @override
     async def callback(self):
+        """Add the tag to the program, save tags to file, and show a notification.
+
+        Returns:
+            An ExecuteResponse specifying that the launcher UI should hide.
+        """
         self.tag_manager.add(self.program, self.tag)
         self.tag_manager.to_file(TAGS_FILE_PATH)
 
@@ -135,6 +179,8 @@ class AddTagToProgramResult(Result):
 
 
 class RemoveTagFromProgramResult(Result):
+    """Result item that removes a tag from a program upon execution."""
+
     def __init__(
         self,
         tag: str,
@@ -143,6 +189,15 @@ class RemoveTagFromProgramResult(Result):
         api: FlowLauncherAPI,
         **kwargs: Unpack[ResultConstructorKwargs],
     ):
+        """Initialize a RemoveTagFromProgramResult instance.
+
+        Args:
+            tag: The tag name to remove.
+            program: The target Program instance.
+            tag_manager: The TagManager handling tag data persistence.
+            api: The Flow Launcher API instance.
+            **kwargs: Additional keyword arguments passed to the Result constructor.
+        """
         super().__init__(**kwargs)
         self.tag: str = tag
         self.program: Program = program
@@ -151,6 +206,11 @@ class RemoveTagFromProgramResult(Result):
 
     @override
     async def callback(self):
+        """Remove the tag from the program, save tags to file, and show a notification.
+
+        Returns:
+            An ExecuteResponse specifying that the launcher UI should hide.
+        """
         self.tag_manager.remove(self.program, self.tag)
         self.tag_manager.to_file(TAGS_FILE_PATH)
 
@@ -163,13 +223,17 @@ class RemoveTagFromProgramResult(Result):
 
 
 class TagsPlugin(Plugin):
+    """Flow Launcher plugin for managing and querying program tags."""
+
     def __init__(self):
+        """Initialize the TagsPlugin instance."""
         super().__init__()
         self.program_manager: ProgramManager
         self.tag_manager: TagManager
 
     @Plugin.event  # pyright: ignore[reportUnknownMemberType, reportUntypedFunctionDecorator]
     async def on_initialization(self):
+        """Handle plugin initialization by scanning programs, caching icons, and loading tags."""
         self.program_manager = ProgramManager.from_os()
 
         for program in self.program_manager.programs:
@@ -189,6 +253,14 @@ class TagsPlugin(Plugin):
 
     @Plugin.search()
     async def search_handler(self, query: Query[None]) -> list[Result]:
+        """Handle incoming search queries from Flow Launcher and return matching results.
+
+        Args:
+            query: The Query object containing user input.
+
+        Returns:
+            A list of Result objects to display in Flow Launcher.
+        """
         logger.debug("Query: %r", query)
 
         results: list[Result] = []
@@ -229,6 +301,14 @@ class TagsPlugin(Plugin):
         return results
 
     def get_program_icon(self, program: Program) -> str:
+        """Retrieve the cached icon path for a program or return a fallback icon path.
+
+        Args:
+            program: The Program instance to get the icon for.
+
+        Returns:
+            The path string of the program icon or default missing icon.
+        """
         cached_icon_path = ICON_CACHE_DIR / f"{program.sha256()[:16]}.png"
 
         if cached_icon_path.exists():
@@ -237,6 +317,14 @@ class TagsPlugin(Plugin):
         return str(ICON_MISSING_PATH)
 
     def get_programs_by_tag(self, tag: str) -> list[Result]:
+        """Retrieve launch result items for programs associated with a given tag.
+
+        Args:
+            tag: The tag name to filter programs by.
+
+        Returns:
+            A list of LaunchProgramResult objects for matching programs.
+        """
         result: list[Result] = []
 
         for program in self.tag_manager.search_by_tag(tag):
@@ -253,6 +341,15 @@ class TagsPlugin(Plugin):
         return result
 
     def get_programs_add_tag_action(self, tag: str, prefix: str) -> list[Result]:
+        """Generate result actions for adding a tag to matching programs.
+
+        Args:
+            tag: The tag name to add.
+            prefix: Search prefix filter for program names.
+
+        Returns:
+            A list of AddTagToProgramResult objects.
+        """
         results: list[Result] = []
 
         programs_by_tag: set[Program] = self.tag_manager.search_by_tag(tag)
@@ -277,6 +374,15 @@ class TagsPlugin(Plugin):
         return results
 
     def get_programs_remove_tag_action(self, tag: str, prefix: str) -> list[Result]:
+        """Generate result actions for removing a tag from tagged programs.
+
+        Args:
+            tag: The tag name to remove.
+            prefix: Search prefix filter for program names.
+
+        Returns:
+            A list of RemoveTagFromProgramResult objects.
+        """
         results: list[Result] = []
 
         programs_by_tag: set[Program] = self.tag_manager.search_by_tag(tag)
@@ -304,6 +410,14 @@ class TagsPlugin(Plugin):
         return results
 
     def autocomplete_command(self, base_query: str) -> list[Result]:
+        """Generate autocomplete suggestion results for available commands.
+
+        Args:
+            base_query: The base query prefix string.
+
+        Returns:
+            A list of ChangeQueryResult objects for available tag commands.
+        """
         return [
             ChangeQueryResult(
                 title="Add tag",
@@ -324,6 +438,15 @@ class TagsPlugin(Plugin):
         ]
 
     def autocomplete_tag(self, base_query: str, prefix: str) -> list[Result]:
+        """Generate autocomplete suggestion results for existing tags matching a prefix.
+
+        Args:
+            base_query: The base query prefix string.
+            prefix: The tag prefix to match.
+
+        Returns:
+            A list of ChangeQueryResult objects for matching tags.
+        """
         results: list[Result] = []
 
         for tag in self.tag_manager.tags:
@@ -341,6 +464,15 @@ class TagsPlugin(Plugin):
         return results
 
     def autocomplete_program(self, base_query: str, prefix: str) -> list[Result]:
+        """Generate autocomplete suggestion results for programs matching a prefix.
+
+        Args:
+            base_query: The base query prefix string.
+            prefix: The program name prefix to match.
+
+        Returns:
+            A list of ChangeQueryResult objects for matching programs.
+        """
         results: list[Result] = []
 
         if prefix:
@@ -362,6 +494,15 @@ class TagsPlugin(Plugin):
         return results
 
     def get_base_query(self, query: str, prefix: str) -> str:
+        """Strip the active autocomplete prefix from the full query string.
+
+        Args:
+            query: The full query string.
+            prefix: The prefix string being autocompleted.
+
+        Returns:
+            The base query string ending with a space separator if non-empty.
+        """
         if prefix and query.endswith(prefix):
             # query without autocomplete prefix
             base_query = query[: -len(prefix)]
@@ -376,6 +517,15 @@ class TagsPlugin(Plugin):
     def autocomplete(
         self, base_query: str, context: AutocompleteContext
     ) -> list[Result]:
+        """Generate autocomplete result suggestions based on the parser context.
+
+        Args:
+            base_query: The base query prefix string.
+            context: The AutocompleteContext containing grammar parsing state.
+
+        Returns:
+            A list of Result objects providing autocompletion suggestions.
+        """
         result: list[Result] = []
 
         match context.type:

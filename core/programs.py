@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 
 
 class ProgramDict(TypedDict):
+    """TypedDict representing serialized program data structure."""
+
     name: str
     version: str | None
     folder: str | None
@@ -27,6 +29,8 @@ class ProgramDict(TypedDict):
 
 @dataclass(frozen=True)
 class Program:
+    """Represents an installed program."""
+
     name: str
     path: str
     version: str | None
@@ -35,17 +39,40 @@ class Program:
 
     @property
     def _normalized_path(self) -> str:
+        """Return the normalized lower-case resolved file path of the program.
+
+        Returns:
+            The normalized path string.
+        """
         return str(Path(self.path).resolve()).lower()
 
     def sha256(self) -> str:
+        """Compute SHA-256 hash of the normalized program path.
+
+        Returns:
+            The hexadecimal SHA-256 digest string.
+        """
         return hashlib.sha256(self._normalized_path.encode()).hexdigest()
 
     @override
     def __hash__(self) -> int:
+        """Return hash value based on the normalized path.
+
+        Returns:
+            Hash integer of the normalized path.
+        """
         return hash(self._normalized_path)
 
     @override
     def __eq__(self, other: object) -> bool:
+        """Check equality with another object based on normalized path.
+
+        Args:
+            other: Object to compare with.
+
+        Returns:
+            True if paths match, False if paths differ, or NotImplemented.
+        """
         if not isinstance(other, Program):
             return NotImplemented
 
@@ -88,6 +115,14 @@ class Program:
 
     # dead code probably
     def icon_to_data_uri(self, fallback: str = "") -> str:
+        """Convert the program icon to a Data URI string.
+
+        Args:
+            fallback: Fallback string to return if icon extraction fails.
+
+        Returns:
+            Base64 encoded Data URI string or fallback.
+        """
         data_uri = fallback
 
         if self.icon:
@@ -107,11 +142,18 @@ class Program:
         return data_uri
 
     def launch(self):
+        """Launch the program as a subprocess.
+
+        Returns:
+            A subprocess.Popen instance representing the running process.
+        """
         return subprocess.Popen(self.path)
 
 
 @dataclass
 class ProgramBuilder:
+    """Builder helper class for constructing Program instances."""
+
     name: str
     version: str | None = None
     folder: str | None = None
@@ -119,14 +161,30 @@ class ProgramBuilder:
     path: str | None = None
 
     def build(self) -> Program:
+        """Build and return a Program instance from current builder attributes.
+
+        Returns:
+            A new Program instance.
+        """
         return Program(self.name, self.path or "", self.version, self.folder, self.icon)
 
 
 def read_registry_entry(key: winreg.HKEYType, name: str) -> str:
-    """Безпечно отримує рядок з реєстру, задовольняючи лінтер."""
+    """Safely retrieve a string from the registry, satisfying the linter.
+
+    Args:
+        key: Open registry key handle.
+        name: Value name to read.
+
+    Returns:
+        The string value from the registry.
+
+    Raises:
+        ValueError: If the registry value type is not a string type.
+    """
     value, reg_type = cast(tuple[str, int], winreg.QueryValueEx(key, name))
 
-    # Перевіряємо, чи є тип одним із дозволених рядкових типів
+    # Check if the type is one of the allowed string types
     if reg_type not in (winreg.REG_SZ, winreg.REG_EXPAND_SZ):
         raise ValueError(f"Unexpected registry value type: {reg_type} for '{name}'")
 
@@ -136,26 +194,32 @@ def read_registry_entry(key: winreg.HKEYType, name: str) -> str:
 def read_programs_from_registry_path(
     hive: int, subkey_path: str
 ) -> list[ProgramBuilder]:
-    """
-    Зчитує програми з конкретної гілки реєстру.
+    """Read installed programs from a specific registry key path.
+
+    Args:
+        hive: Registry hive handle (e.g., winreg.HKEY_LOCAL_MACHINE).
+        subkey_path: Path string to the registry subkey.
+
+    Returns:
+        A list of ProgramBuilder instances extracted from the registry path.
     """
     programs: list[ProgramBuilder] = []
     try:
-        # Відкриваємо гілку реєстру для читання
+        # Open the registry key for reading
         with winreg.OpenKey(hive, subkey_path) as key:
-            # Отримуємо кількість підключів (папок) у цій гілці
+            # Get the number of subkeys (folders) in this key
             num_subkeys = winreg.QueryInfoKey(key)[0]
 
             for i in range(num_subkeys):
                 try:
-                    # Отримуємо ім'я підключа (наприклад, GUID або назву програми)
+                    # Get the subkey name (e.g., GUID or program name)
                     subkey_name = winreg.EnumKey(key, i)
                     with winreg.OpenKey(key, subkey_name) as subkey:
-                        # Намагаємося отримати параметр DisplayName
+                        # Try to get the DisplayName value
                         try:
                             name: str = read_registry_entry(subkey, "DisplayName")
                         except (OSError, ValueError):
-                            continue  # Пропускаємо, якщо немає назви
+                            continue  # Skip if there is no display name
 
                         try:
                             version: str | None = read_registry_entry(
@@ -189,28 +253,30 @@ def read_programs_from_registry_path(
                 except OSError:
                     continue
     except OSError:
-        # Якщо гілка не існує або немає доступу, просто повертаємо порожній список
+        # If the key does not exist or access is denied, return an empty list
         pass
 
     return programs
 
 
 def get_programs_from_registry() -> list[ProgramBuilder]:
-    """
-    Збирає програми з усіх необхідних гілок реєстру (x64, x32, Current User).
+    """Collect programs from all required registry paths (x64, x32, Current User).
+
+    Returns:
+        A list of unique ProgramBuilder instances sorted by program name.
     """
     registry_paths = [
-        # x64 програми для всіх користувачів
+        # x64 programs for all users
         (
             winreg.HKEY_LOCAL_MACHINE,
             r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
         ),
-        # x32 програми для всіх користувачів (на 64-бітній ОС)
+        # x32 programs for all users (on 64-bit OS)
         (
             winreg.HKEY_LOCAL_MACHINE,
             r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall",
         ),
-        # Програми для поточного користувача
+        # Programs for current user
         (
             winreg.HKEY_CURRENT_USER,
             r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
@@ -235,6 +301,11 @@ def get_programs_from_registry() -> list[ProgramBuilder]:
 
 
 def get_all_installed_programs() -> list[Program]:
+    """Retrieve all installed programs detected from the Windows registry.
+
+    Returns:
+        A list of constructed Program instances.
+    """
     program_drafts = get_programs_from_registry()
 
     for program in program_drafts:

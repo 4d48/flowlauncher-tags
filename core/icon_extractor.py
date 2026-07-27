@@ -90,6 +90,8 @@ def extract_dll_icon_as_image(
     try:
 
         class ICONINFO(ctypes.Structure):
+            """Win32 ICONINFO structure for icon metadata."""
+
             _fields_ = [
                 ("fIcon", ctypes.c_bool),
                 ("xHotspot", ctypes.c_uint),
@@ -102,6 +104,8 @@ def extract_dll_icon_as_image(
         user32.GetIconInfo(hicon, ctypes.byref(icon_info))
 
         class BITMAP(ctypes.Structure):
+            """Win32 BITMAP structure for bitmap metadata."""
+
             _fields_ = [
                 ("bmType", ctypes.c_long),
                 ("bmWidth", ctypes.c_long),
@@ -118,6 +122,8 @@ def extract_dll_icon_as_image(
         hdc = user32.GetDC(None)
 
         class BITMAPINFOHEADER(ctypes.Structure):
+            """Win32 BITMAPINFOHEADER structure for bitmap header details."""
+
             _fields_ = [
                 ("biSize", ctypes.c_uint),
                 ("biWidth", ctypes.c_long),
