@@ -7,6 +7,6 @@
   "Version": "1.0.0",
   "Language": "python_v2",
   "Website": "https://github.com/x4d47",
-  "IcoPath": "Images\\app.png",
+  "IcoPath": "Images\\plugin.png",
   "ExecuteFileName": "main.py"
 }

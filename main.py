@@ -11,6 +11,7 @@ from typing import Unpack, override
 
 from flogin import (
     ExecuteResponse,
+    Glyph,
     Plugin,
     Query,
     Result,
@@ -422,7 +423,7 @@ class TagsPlugin(Plugin):
             ChangeQueryResult(
                 title="Add tag",
                 query_suggestion_text=f"{CommandKeyword.ADD_TAG}",
-                icon="Images/transparent.png",
+                glyph=Glyph(text=">", font_family="Segoe UI"),
                 score=MAX_SCORE,
                 new_query=f"{base_query}{CommandKeyword.ADD_TAG} ",
                 api=self.api,
@@ -430,7 +431,7 @@ class TagsPlugin(Plugin):
             ChangeQueryResult(
                 title="Remove tag",
                 query_suggestion_text=f"{CommandKeyword.REMOVE_TAG}",
-                icon="Images/transparent.png",
+                glyph=Glyph(text=">", font_family="Segoe UI"),
                 score=MAX_SCORE,
                 new_query=f"{base_query}{CommandKeyword.REMOVE_TAG} ",
                 api=self.api,
@@ -455,7 +456,7 @@ class TagsPlugin(Plugin):
                     ChangeQueryResult(
                         title=f"{tag}",
                         query_suggestion_text=f"{tag}",
-                        icon="Images/transparent.png",
+                        glyph=Glyph(text="#", font_family="Segoe UI"),
                         new_query=f"{base_query}{tag} ",
                         api=self.api,
                     )
