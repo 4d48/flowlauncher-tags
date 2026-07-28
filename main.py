@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 plugindir = Path.absolute(Path(__file__).parent)
-sys.path.insert(0, str(plugindir / ".venv" / "Lib" / "site-packages"))
+sys.path.insert(0, str(plugindir / "lib"))
 
 import logging
 import os

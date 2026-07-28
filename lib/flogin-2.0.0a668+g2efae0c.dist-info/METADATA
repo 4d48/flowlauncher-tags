@@ -1,0 +1,119 @@
+Metadata-Version: 2.4
+Name: flogin
+Version: 2.0.0a668+g2efae0c
+Summary: A Python wrapper for Flow Launcher's v2 python api
+Author: cibere
+Project-URL: Documentation, https://flogin.readthedocs.io/en/latest/
+Project-URL: Issue tracker, https://github.com/cibere/flogin/issues
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: Microsoft :: Windows :: Windows 11
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.11
+Description-Content-Type: text/x-rst
+Requires-Dist: aioconsole==0.8.2
+Provides-Extra: docs
+Requires-Dist: sphinx<9.0.0,>=7.0.0; extra == "docs"
+Requires-Dist: furo==2025.7.19; extra == "docs"
+Requires-Dist: sphinx-toolbox<5.0,>=3.5; extra == "docs"
+Requires-Dist: sphinxcontrib-trio==1.1.2; extra == "docs"
+Requires-Dist: sphinx-copybutton==0.5.2; extra == "docs"
+Provides-Extra: tests
+Requires-Dist: pytest==9.0.1; extra == "tests"
+Requires-Dist: pytest-asyncio==1.3.0; extra == "tests"
+Requires-Dist: pytest-cov==6.2.1; extra == "tests"
+Provides-Extra: pip
+Requires-Dist: requests==2.32.5; extra == "pip"
+
+flogin
+=======
+
+.. image:: https://img.shields.io/github/actions/workflow/status/cibere/flogin/tests.yml?label=tests
+    :target: https://github.com/cibere/flogin/actions/workflows/tests.yml
+    :alt: Tests Workflow Status
+.. image:: https://flogin-coverage.cibere.dev/badges/3.13.svg
+    :target: https://flogin-coverage.cibere.dev
+    :alt: Coverage Report
+.. image:: https://img.shields.io/github/actions/workflow/status/cibere/flogin/build.yml?label=build
+    :target: https://github.com/cibere/flogin/actions/workflows/build.yml
+    :alt: Build Workflow Status
+.. image:: https://img.shields.io/github/actions/workflow/status/cibere/flogin/lint.yml?label=lint
+    :target: https://github.com/cibere/flogin/actions/workflows/lint.yml
+    :alt: Lint Workflow Status
+
+.. raw:: html
+
+    <br>
+
+.. image:: https://img.shields.io/pypi/v/flogin.svg
+    :target: https://pypi.python.org/pypi/flogin
+    :alt: PyPI version info
+.. image:: https://img.shields.io/pypi/pyversions/flogin.svg
+    :target: https://pypi.python.org/pypi/flogin
+    :alt: PyPI supported Python versions
+.. image:: https://img.shields.io/badge/Documentation-Stable-blue
+    :target: https://flogin.cibere.dev/en/stable
+    :alt: Stable Documentation
+.. image:: https://img.shields.io/badge/Documentation-Dev/Latest-blue
+    :target: https://flogin.cibere.dev/en/latest
+    :alt: Dev/Latest Documentation
+
+A wrapper for Flow Lancher's V2 jsonrpc api using python, to easily and quickly make **Flo**\ w launcher plu\ **gin**\ s.
+
+.. WARNING::
+    This library is still in alpha development, so expect breaking changes
+
+Key Features
+-------------
+
+- Modern Pythonic API using ``async`` and ``await``.
+- Fully Typed
+- Easy to use with an object oriented design
+
+Installing
+----------
+
+**Python 3.11 or higher is required**
+
+To install flogin, do the following:
+
+.. code:: sh
+
+    pip install flogin
+
+To install the development version, ensure `git <https://git-scm.com/>`_ is installed, then do the following:
+
+.. code:: sh
+
+    pip install git+https://github.com/cibere/flogin
+
+Basic Example
+-------------
+.. code:: py
+
+    from flogin import Plugin, Query
+
+    plugin = Plugin()
+
+    @plugin.search()
+    async def on_query(data: Query):
+        return f"You wrote {data.text}"
+    
+    plugin.run()
+
+You can find more examples in the examples directory.
+
+Links
+------
+
+- `Documentation <https://flogin.readthedocs.io/en/latest/index.html>`_
+- `Flow Launcher's Official Discord Server <https://discord.gg/QDbDfUJaGH>`_

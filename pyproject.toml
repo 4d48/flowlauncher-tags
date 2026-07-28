@@ -2,7 +2,7 @@
 name = "flowlauncher-tags"
 version = "1.0.0"
 dependencies = [
-    "flogin @ git+https://github.com/cibere/flogin.git@0971f2b",
+    "flogin @ git+https://github.com/4d48/flogin.git",
     "Pillow",
 ]
 
