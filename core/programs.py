@@ -26,9 +26,8 @@ from typing import TypedDict, cast, override
 
 from PIL import Image
 
+from config import logger
 from core.icon_extractor import save_dll_icon_to_png
-
-logger = logging.getLogger(__name__)
 
 UNINSTALL_KEYWORDS: set[str] = {
     "uninstall",

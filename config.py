@@ -24,11 +24,18 @@ ICON_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 # largest score value in FlowLauncher (2^31 - 1)
 MAX_SCORE: int = 2_147_483_647
 
-logging.basicConfig(
-    filename=PLUGIN_DATADIR / "plugin.log",
-    level=logging.DEBUG,
-    format="%(asctime)s [%(levelname)s] %(name)s (%(filename)s:%(lineno)d): %(message)s",
+logger = logging.getLogger("tags_plugin")
+
+logger.propagate = False
+
+file_handler = logging.FileHandler(PLUGIN_DATADIR / "plugin.log", encoding="utf-8")
+file_handler.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter(
+    fmt="%(asctime)s [%(levelname)s] %(name)s (%(filename)s:%(lineno)d): %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
+file_handler.setFormatter(formatter)
 
-logger = logging.getLogger(__name__)
+if not logger.handlers:
+    logger.addHandler(file_handler)
