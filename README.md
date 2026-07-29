@@ -24,4 +24,4 @@ Default activation keyword: `tag`.
 ## Credits
 - amazing [flogin](https://github.com/cibere/flogin) library by [cibere](https://github.com/cibere) — a python wrapper over Flow Launcher's v2 API
 - `plugin.png` by [Turan Kent](https://www.flaticon.com/authors/turan-kent) from [Flaticon](https://www.flaticon.com)
-- `flow.png` and `icon_missing.png` by [Flow Launcher Team](https://github.com/Flow-Launcher/Flow.Launcher)
+- `icon_missing.png` by [Flow Launcher Team](https://github.com/Flow-Launcher/Flow.Launcher)
