@@ -16,7 +16,7 @@ PLUGIN_DATADIR.mkdir(parents=True, exist_ok=True)
 TAGS_FILE_PATH = PLUGIN_DATADIR / "tags.json"
 # PROGRAMS_FILE_PATH = PLUGIN_DATADIR / "programs.json"
 
-ICON_MISSING_PATH = Path("Images") / "icon_missing.png"
+ICON_MISSING_PATH = Path("images") / "icon_missing.png"
 
 ICON_CACHE_DIR = PLUGIN_DATADIR / "icon_cache"
 ICON_CACHE_DIR.mkdir(parents=True, exist_ok=True)

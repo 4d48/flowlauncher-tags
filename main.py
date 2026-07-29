@@ -58,9 +58,7 @@ class TagsPlugin(Plugin):
             cached_icon_path = ICON_CACHE_DIR / f"{(program.sha256()[:16])}.png"
 
             if not cached_icon_path.exists():
-                _ = program.icon_to_file(
-                    cached_icon_path, Path("Images") / "icon_missing.png"
-                )
+                _ = program.icon_to_file(cached_icon_path, ICON_MISSING_PATH)
 
         try:
             self.tag_manager = TagManager.from_file(TAGS_FILE_PATH)

@@ -3,10 +3,10 @@
   "ActionKeyword": "tag",
   "Name": "Tags",
   "Description": "Tags plugin description...",
-  "Author": "x4d47",
+  "Author": "4d48",
   "Version": "1.0.0",
   "Language": "python_v2",
-  "Website": "https://github.com/x4d47",
-  "IcoPath": "Images\\plugin.png",
+  "Website": "https://github.com/4d48/flowlauncher-tags",
+  "IcoPath": "images\\plugin.png",
   "ExecuteFileName": "main.py"
 }
