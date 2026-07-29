@@ -1,3 +1,4 @@
+import logging
 from typing import Unpack, override
 
 from flogin import (
@@ -10,6 +11,8 @@ from flogin.flow.api import FlowLauncherAPI
 from config import TAGS_FILE_PATH
 from core.programs import Program
 from core.tag_manager import TagManager
+
+logger = logging.getLogger(__name__)
 
 
 class ChangeQueryResult(Result):
@@ -124,6 +127,14 @@ class AddTagToProgramResult(Result):
         await self.api.change_query("", requery=False)
 
         return ExecuteResponse(hide=True)
+
+    # @override
+    # async def context_menu(self) -> list[Result]:
+    #     menu_entries: list[Result] = []
+
+    #     menu_entries.append(title=self.program.path, sub=self.program.icon)
+
+    #     return menu_entries
 
 
 class RemoveTagFromProgramResult(Result):

@@ -63,8 +63,9 @@ gdi32.DeleteObject.restype = ctypes.c_bool
 def extract_dll_icon_as_image(
     dll_path: str, icon_index: int, icon_size: int = 48
 ) -> Image.Image:
-    """
-    Extracts an icon from a DLL by index and returns it as a PIL Image object.
+    """Extract an icon from an executable or DLL by index and return it as a PIL Image.
+
+    Uses Win32 PrivateExtractIconsW with 0-alpha channel correction.
     """
     phicon = (HICON * 1)()
     piconid = (ctypes.c_uint * 1)()
@@ -153,13 +154,53 @@ def extract_dll_icon_as_image(
             hdc, icon_info.hbmColor, 0, bmp.bmHeight, pixel_buffer, ctypes.byref(bi), 0
         )
 
+        img = Image.frombytes(
+            "RGBA", (bmp.bmWidth, bmp.bmHeight), pixel_buffer.raw, "raw", "BGRA"
+        )
+
+        # Extract transparency from hbmMask if native alpha channel is empty (all zeros)
+        if img.getchannel("A").getextrema() == (0, 0):
+            mask_bi = BITMAPINFOHEADER()
+            mask_bi.biSize = ctypes.sizeof(BITMAPINFOHEADER)
+            mask_bi.biWidth = bmp.bmWidth
+            mask_bi.biHeight = -bmp.bmHeight
+            mask_bi.biPlanes = 1
+            mask_bi.biBitCount = 1
+            mask_bi.biCompression = 0
+
+            stride = ((bmp.bmWidth + 31) // 32) * 4
+            mask_buffer = ctypes.create_string_buffer(stride * bmp.bmHeight)
+            _ = gdi32.GetDIBits(
+                hdc,
+                icon_info.hbmMask,
+                0,
+                bmp.bmHeight,
+                mask_buffer,
+                ctypes.byref(mask_bi),
+                0,
+            )
+
+            alpha_bytes = bytearray(bmp.bmWidth * bmp.bmHeight)
+            raw_mask = mask_buffer.raw
+            for y in range(bmp.bmHeight):
+                row_start = y * stride
+                for x in range(bmp.bmWidth):
+                    byte_idx = row_start + (x // 8)
+                    bit_idx = 7 - (x % 8)
+                    bit = (raw_mask[byte_idx] >> bit_idx) & 1
+                    alpha_bytes[y * bmp.bmWidth + x] = 0 if bit else 255
+
+            r, g, b, _ = img.split()
+            alpha_img = Image.frombytes(
+                "L", (bmp.bmWidth, bmp.bmHeight), bytes(alpha_bytes)
+            )
+            img = Image.merge("RGBA", (r, g, b, alpha_img))
+
         user32.ReleaseDC(None, hdc)
         gdi32.DeleteObject(icon_info.hbmColor)
         gdi32.DeleteObject(icon_info.hbmMask)
 
-        return Image.frombytes(
-            "RGBA", (bmp.bmWidth, bmp.bmHeight), pixel_buffer.raw, "raw", "BGRA"
-        )
+        return img
 
     finally:
         user32.DestroyIcon(hicon)
