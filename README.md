@@ -6,7 +6,7 @@ A simple [Flow Launcher](https://github.com/Flow-Launcher/Flow.Launcher) plugin 
 - basic commands to assign, remove tags and list programs
 
 ## Installation
-Download the source code and put the folder here: <br>
+Download the latest release, unzip it and put the folder here: <br>
 `%AppData%\FlowLauncher\Plugins\`
 
 ## Usage
