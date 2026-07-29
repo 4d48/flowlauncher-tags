@@ -10,7 +10,6 @@ from typing import TypedDict, cast, override
 from PIL import Image
 
 from core.icon_extractor import (
-    get_dll_icon_as_data_uri,
     save_dll_icon_to_png,
 )
 
@@ -112,34 +111,6 @@ class Program:
             )
             _ = shutil.copy(fallback, output_path)
             return output_path
-
-    # dead code probably
-    def icon_to_data_uri(self, fallback: str = "") -> str:
-        """Convert the program icon to a Data URI string.
-
-        Args:
-            fallback: Fallback string to return if icon extraction fails.
-
-        Returns:
-            Base64 encoded Data URI string or fallback.
-        """
-        data_uri = fallback
-
-        if self.icon:
-            parts = self.icon.split(",")
-
-            try:
-                data_uri = get_dll_icon_as_data_uri(
-                    dll_path=parts[0],
-                    icon_index=int(parts[1]) if len(parts) > 1 else 0,
-                )
-            except Exception:
-                try:
-                    data_uri = get_dll_icon_as_data_uri(dll_path=parts[0], icon_index=0)
-                except Exception:
-                    pass
-
-        return data_uri
 
     def launch(self):
         """Launch the program as a subprocess.
