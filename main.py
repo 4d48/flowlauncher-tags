@@ -37,6 +37,7 @@ from ui.results import (
     ChangeQueryResult,
     LaunchProgramResult,
     RemoveTagFromProgramResult,
+    RemoveTagResult,
 )
 
 
@@ -103,6 +104,7 @@ class TagsPlugin(Plugin):
 
         match parser_result.command:
             case GetProgramsByTag():
+                results.extend(self.autocomplete_command(base_query, context.prefix))
                 results.extend(self.autocomplete_tag(base_query, context.prefix))
                 results.extend(self.get_programs_by_tag(parser_result.command.tag_name))
             case AddTag() | RemoveTag():
@@ -197,6 +199,18 @@ class TagsPlugin(Plugin):
         """
         results: list[Result] = []
 
+        results.append(
+            RemoveTagResult(
+                title="Remove entire tag",
+                query_suggestion_text=f"{tag}",
+                glyph=Glyph(text="✕", font_family="Segoe UI"),
+                score=MAX_SCORE,
+                tag=tag,
+                tag_manager=self.tag_manager,
+                api=self.api,
+            )
+        )
+
         programs_by_tag: set[Program] = self.tag_manager.search_by_tag(tag)
 
         if prefix:
@@ -221,7 +235,7 @@ class TagsPlugin(Plugin):
 
         return results
 
-    def autocomplete_command(self, base_query: str) -> list[Result]:
+    def autocomplete_command(self, base_query: str, prefix: str) -> list[Result]:
         """Generate autocomplete suggestion results for available commands.
 
         Args:
@@ -230,24 +244,22 @@ class TagsPlugin(Plugin):
         Returns:
             A list of ChangeQueryResult objects for available tag commands.
         """
-        return [
-            ChangeQueryResult(
-                title="Add tag",
-                query_suggestion_text=f"{CommandKeyword.ADD_TAG}",
-                glyph=Glyph(text=">", font_family="Segoe UI"),
-                score=MAX_SCORE,
-                new_query=f"{base_query}{CommandKeyword.ADD_TAG} ",
-                api=self.api,
-            ),
-            ChangeQueryResult(
-                title="Remove tag",
-                query_suggestion_text=f"{CommandKeyword.REMOVE_TAG}",
-                glyph=Glyph(text=">", font_family="Segoe UI"),
-                score=MAX_SCORE,
-                new_query=f"{base_query}{CommandKeyword.REMOVE_TAG} ",
-                api=self.api,
-            ),
-        ]
+        result: list[Result] = []
+
+        for command in CommandKeyword:
+            if command.value.startswith(prefix):
+                result.append(
+                    ChangeQueryResult(
+                        title=command.result_title,
+                        query_suggestion_text=f"{command.value}",
+                        glyph=Glyph(text=">", font_family="Segoe UI"),
+                        score=MAX_SCORE,
+                        new_query=f"{base_query}{command.value} ",
+                        api=self.api,
+                    )
+                )
+
+        return result
 
     def autocomplete_tag(self, base_query: str, prefix: str) -> list[Result]:
         """Generate autocomplete suggestion results for existing tags matching a prefix.
@@ -343,7 +355,7 @@ class TagsPlugin(Plugin):
         match context.type:
             case [AutocompleteType.COMMAND, AutocompleteType.TAG]:
                 result = [
-                    *self.autocomplete_command(base_query),
+                    *self.autocomplete_command(base_query, context.prefix),
                     *self.autocomplete_tag(base_query, context.prefix),
                 ]
             case [AutocompleteType.TAG]:

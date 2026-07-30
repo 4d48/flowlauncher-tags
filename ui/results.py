@@ -115,7 +115,7 @@ class AddTagToProgramResult(Result):
         Returns:
             An ExecuteResponse specifying that the launcher UI should hide.
         """
-        self.tag_manager.add(self.program, self.tag)
+        self.tag_manager.add(self.tag, self.program)
         self.tag_manager.to_file(TAGS_FILE_PATH)
 
         await self.api.show_notification(
@@ -167,12 +167,51 @@ class RemoveTagFromProgramResult(Result):
         Returns:
             An ExecuteResponse specifying that the launcher UI should hide.
         """
-        self.tag_manager.remove(self.program, self.tag)
+        self.tag_manager.remove(self.tag, self.program)
         self.tag_manager.to_file(TAGS_FILE_PATH)
 
         await self.api.show_notification(
             "Success!", f"Removed tag '{self.tag}' from program '{self.program.name}'"
         )
+        await self.api.change_query("", requery=False)
+
+        return ExecuteResponse(hide=True)
+
+
+class RemoveTagResult(Result):
+    """Result item that removes entire tag upon execution."""
+
+    def __init__(
+        self,
+        tag: str,
+        tag_manager: TagManager,
+        api: FlowLauncherAPI,
+        **kwargs: Unpack[ResultConstructorKwargs],
+    ):
+        """Initialize a RemoveTagResult instance.
+
+        Args:
+            tag: The tag name to remove.
+            tag_manager: The TagManager handling tag data persistence.
+            api: The Flow Launcher API instance.
+            **kwargs: Additional keyword arguments passed to the Result constructor.
+        """
+        super().__init__(**kwargs)
+        self.tag: str = tag
+        self.tag_manager: TagManager = tag_manager
+        self.api: FlowLauncherAPI = api
+
+    @override
+    async def callback(self):
+        """Remove an entire tag, save tags to file, and show a notification.
+
+        Returns:
+            An ExecuteResponse specifying that the launcher UI should hide.
+        """
+        self.tag_manager.remove(self.tag)
+        self.tag_manager.to_file(TAGS_FILE_PATH)
+
+        await self.api.show_notification("Success!", f"Removed tag '{self.tag}'")
         await self.api.change_query("", requery=False)
 
         return ExecuteResponse(hide=True)

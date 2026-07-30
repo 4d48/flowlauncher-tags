@@ -25,11 +25,12 @@ ICON_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 MAX_SCORE: int = 2_147_483_647
 
 logger = logging.getLogger("tags_plugin")
+logger.setLevel(logging.WARNING)
 
 logger.propagate = False
 
 file_handler = logging.FileHandler(PLUGIN_DATADIR / "plugin.log", encoding="utf-8")
-file_handler.setLevel(logging.DEBUG)
+file_handler.setLevel(logging.WARNING)
 
 formatter = logging.Formatter(
     fmt="%(asctime)s [%(levelname)s] %(name)s (%(filename)s:%(lineno)d): %(message)s",

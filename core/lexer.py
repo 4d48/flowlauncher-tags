@@ -8,6 +8,14 @@ class CommandKeyword(StrEnum):
     ADD_TAG = "add"
     REMOVE_TAG = "remove"
 
+    @property
+    def result_title(self) -> str:
+        match self:
+            case CommandKeyword.ADD_TAG:
+                return "Add tag"
+            case CommandKeyword.REMOVE_TAG:
+                return "Remove tag"
+
 
 class TokenType(StrEnum):
     """Enum representing lexer token types."""

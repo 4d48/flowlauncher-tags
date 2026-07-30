@@ -29,25 +29,29 @@ class TagManager:
         """
         return set(self._tag_to_programs.keys())
 
-    def add(self, program: Program, tag: str):
+    def add(self, tag: str, program: Program):
         """Associate a program with a specified tag.
 
         Args:
-            program: The Program instance to tag.
             tag: The tag name to add.
+            program: The Program instance to tag.
         """
         if tag not in self._tag_to_programs:
             self._tag_to_programs[tag] = set()
 
         self._tag_to_programs[tag].add(program)
 
-    def remove(self, program: Program, tag: str):
-        """Remove a tag association from a program.
+    def remove(self, tag: str, program: Program | None = None):
+        """Remove a tag association from a program or entire tag if no program is specified.
 
         Args:
-            program: The Program instance.
             tag: The tag name to remove.
+            program: The Program instance to remove the tag from.
         """
+        if program is None:
+            _ = self._tag_to_programs.pop(tag, None)
+            return
+
         if tag not in self._tag_to_programs:
             return
 
