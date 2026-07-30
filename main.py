@@ -36,6 +36,7 @@ from ui.results import (
     AddTagToProgramResult,
     ChangeQueryResult,
     LaunchProgramResult,
+    ReindexResult,
     RemoveTagFromProgramResult,
     RemoveTagResult,
 )
@@ -128,7 +129,7 @@ class TagsPlugin(Plugin):
         if cached_icon_path.exists():
             return str(cached_icon_path)
 
-        return str(ICON_MISSING_PATH)
+        return str(program.icon_to_file(cached_icon_path, ICON_MISSING_PATH))
 
     def get_programs_by_tag(self, tag: str) -> list[Result]:
         """Retrieve launch result items for programs associated with a given tag.
@@ -248,16 +249,28 @@ class TagsPlugin(Plugin):
 
         for command in CommandKeyword:
             if command.value.startswith(prefix):
-                result.append(
-                    ChangeQueryResult(
-                        title=command.result_title,
-                        query_suggestion_text=f"{command.value}",
-                        glyph=Glyph(text=">", font_family="Segoe UI"),
-                        score=MAX_SCORE,
-                        new_query=f"{base_query}{command.value} ",
-                        api=self.api,
+                if command == CommandKeyword.REINDEX_PROGRAMS:
+                    result.append(
+                        ReindexResult(
+                            title=command.result_title,
+                            query_suggestion_text=f"{command.value}",
+                            glyph=Glyph(text=">", font_family="Segoe UI"),
+                            score=MAX_SCORE,
+                            program_manager=self.program_manager,
+                            api=self.api,
+                        )
                     )
-                )
+                else:
+                    result.append(
+                        ChangeQueryResult(
+                            title=command.result_title,
+                            query_suggestion_text=f"{command.value}",
+                            glyph=Glyph(text=">", font_family="Segoe UI"),
+                            score=MAX_SCORE,
+                            new_query=f"{base_query}{command.value} ",
+                            api=self.api,
+                        )
+                    )
 
         return result
 

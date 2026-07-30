@@ -7,6 +7,7 @@ class CommandKeyword(StrEnum):
 
     ADD_TAG = "add"
     REMOVE_TAG = "remove"
+    REINDEX_PROGRAMS = "reindex"
 
     @property
     def result_title(self) -> str:
@@ -15,6 +16,8 @@ class CommandKeyword(StrEnum):
                 return "Add tag"
             case CommandKeyword.REMOVE_TAG:
                 return "Remove tag"
+            case CommandKeyword.REINDEX_PROGRAMS:
+                return "Reindex programs"
 
 
 class TokenType(StrEnum):
@@ -25,6 +28,7 @@ class TokenType(StrEnum):
     IDENTIFIER = auto()
     OP_ADD = auto()
     OP_REM = auto()
+    OP_REINDEX = auto()
 
 
 @dataclass(frozen=True)

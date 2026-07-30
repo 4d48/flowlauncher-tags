@@ -7,7 +7,8 @@ from flogin import (
 )
 from flogin.flow.api import FlowLauncherAPI
 
-from config import TAGS_FILE_PATH
+from config import PLUGIN_KEYWORD, TAGS_FILE_PATH
+from core.program_manager import ProgramManager
 from core.programs import Program
 from core.tag_manager import TagManager
 
@@ -215,3 +216,40 @@ class RemoveTagResult(Result):
         await self.api.change_query("", requery=False)
 
         return ExecuteResponse(hide=True)
+
+
+class ReindexResult(Result):
+    """Result item that reindexes the program list upon execution."""
+
+    def __init__(
+        self,
+        program_manager: ProgramManager,
+        api: FlowLauncherAPI,
+        **kwargs: Unpack[ResultConstructorKwargs],
+    ):
+        """Initialize a ReindexProgamsResult instance.
+
+        Args:
+            api: The Flow Launcher API instance.
+            **kwargs: Additional keyword arguments passed to the Result constructor.
+        """
+        super().__init__(**kwargs)
+        self.program_manager: ProgramManager = program_manager
+        self.api: FlowLauncherAPI = api
+
+    @override
+    async def callback(self):
+        """Reindex the program list and show a notification.
+
+        Returns:
+            An ExecuteResponse specifying that the launcher UI should hide.
+        """
+
+        await self.api.change_query("Please, wait...", requery=False)
+
+        self.program_manager = ProgramManager.from_os()
+
+        await self.api.show_notification("Success!", "Reindexed program list")
+        await self.api.change_query(f"{PLUGIN_KEYWORD}", requery=False)
+
+        return ExecuteResponse(hide=False)

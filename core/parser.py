@@ -46,6 +46,11 @@ class RemoveTag(Command):
     program_name: str
 
 
+@dataclass(frozen=True)
+class Reindex(Command):
+    """Reindex programs."""
+
+
 class AutocompleteType(Enum):
     """Enum representing categories of autocompletion context."""
 
@@ -83,6 +88,7 @@ class GrammarNodeType(Enum):
     PROGRAM = auto()
     OP_ADD = auto()
     OP_REM = auto()
+    OP_REINDEX = auto()
 
     @property
     def token_type(self) -> TokenType:
@@ -98,6 +104,7 @@ class GrammarNodeType(Enum):
             GrammarNodeType.PROGRAM: TokenType.IDENTIFIER,
             GrammarNodeType.OP_ADD: TokenType.OP_ADD,
             GrammarNodeType.OP_REM: TokenType.OP_REM,
+            GrammarNodeType.OP_REINDEX: TokenType.OP_REINDEX,
         }
         return mapping[self]
 
@@ -174,6 +181,9 @@ grammar: GrammarNode = GrammarNode(
 
 grammar.add_child_and_return(
     GrammarNode(GetProgramsByTag,        GrammarNodeType.TAG,    [AutocompleteType.TAG])
+).set_last()
+grammar.add_child_and_return(
+    GrammarNode(Reindex,          GrammarNodeType.OP_REINDEX,    [AutocompleteType.NOTHING])
 ).set_last()
 grammar.add_child(GrammarNode(AddTag,    GrammarNodeType.OP_ADD, [AutocompleteType.TAG]))
 grammar.add_child(GrammarNode(RemoveTag, GrammarNodeType.OP_REM, [AutocompleteType.TAG]))
